@@ -2,7 +2,7 @@
 package negocio;
 
 
-public class Palabra
+public class Vocabulario
 {
     
 }

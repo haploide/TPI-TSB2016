@@ -1,7 +1,8 @@
+
 package soporte;
 
 
-public class Persistencia
+public class HashTable
 {
     
 }
