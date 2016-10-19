@@ -17,7 +17,7 @@ public class Principal
 {
     public static void main(String[] args)
     {
-         File arch = new File("I:\\UTN\\TSB\\TPI\\TPI-TSB2016\\Vocabulario\\Libros\\16082-8.txt");
+         File arch = new File("C:\\Users\\pablo\\Desktop\\TSB 2016\\00 TRABAJO PRACTICO\\16082-8.txt");
          
          Vocabulario voc = new Vocabulario(arch);
          voc.leerArchivo(arch);

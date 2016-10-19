@@ -20,7 +20,7 @@ public class Vocabulario
 
     public void parserTexto( String str)
     {
-        String delims = "[ \\p{Punct}¿¡0123456789ªº]+";
+        String delims = "[ \\p{Punct}¿¡0123456789ªº\\<\\>]+";
 
         String[] tokens = str.split(delims);
 
@@ -34,24 +34,7 @@ public class Vocabulario
     public void leerArchivo(File f)
     {
      
-//         try(FileReader fr = new FileReader(f); BufferedReader br = new BufferedReader(fr))
-//        {
-//           String ln = br.readLine();
-//           while(ln!=null)
-//           {
-//               String str = ln;
-//               parserTexto(str);
-//               
-//               ln = br.readLine();
-//           }
-//        }
-//        
-//        catch(IOException e)
-//        {
-//            System.out.println("Error al procesar el archivo de entrada...");
-//        }        
-//     
-
+ 
         try 
         {
             Scanner sc = new Scanner(new FileInputStream(f),"ISO-8859-1");
@@ -60,9 +43,9 @@ public class Vocabulario
             while (sc.hasNextLine())
             {
                 String str = sc.nextLine();
-               // parserTexto(str);
+                parserTexto(str);
 
-                System.out.println(str);
+//                System.out.println(str);
             }
         } catch (FileNotFoundException | IllegalStateException e)
         {
