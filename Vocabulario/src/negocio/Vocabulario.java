@@ -20,7 +20,7 @@ public class Vocabulario
 
     public void parserTexto( String str)
     {
-        String delims = "[ \\p{Punct}¿¡0123456789ªº\\<\\>]+";
+        String delims = "[ \\p{Punct}¿¡0123456789ªº\\<\\>\\«\\»]+";
 
         String[] tokens = str.split(delims);
 
