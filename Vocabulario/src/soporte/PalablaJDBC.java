@@ -4,35 +4,36 @@
  * and open the template in the editor.
  */
 package soporte;
-
-import interfaz.Principal;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import negocio.*;
 /**
  *
  * @author pablo
  */
-public class Documento
+public class PalablaJDBC
 {
 
-    public static void Insert(String doc)
+    public PalablaJDBC()
+    {
+    }
+    
+     public static void Insert(Palabra p)
     {
 
         try
         {
             Connection connection = abrirConexion();
-            String sql = "INSERT INTO Documento (documento)  VALUES(?)";
+            String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
            
-            preparedStmt.setString(1, doc);
+            preparedStmt.setString(1, p.getPalabra());
+            preparedStmt.setInt(2, p.getFrecuencia());
             preparedStmt.executeUpdate();
             connection.commit();
             preparedStmt.close();
@@ -40,21 +41,16 @@ public class Documento
 
         } catch (IOException ex)
         {
-            Logger.getLogger(Documento.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex)
         {
-            Logger.getLogger(Documento.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex)
         {
-            Logger.getLogger(Documento.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
-    public Documento()
-    {
-    }
-
     private static Connection abrirConexion() throws IOException, ClassNotFoundException, SQLException
     {
 
