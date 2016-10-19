@@ -3,6 +3,7 @@ package interfaz;
 
 import java.io.File;
 import java.util.LinkedList;
+import javax.swing.JFileChooser;
 import negocio.Vocabulario;
 
 
@@ -86,6 +87,13 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jBtnCargarDocumentos.setIcon(new javax.swing.ImageIcon(".\\resource\\agregar24.png"));
         jBtnCargarDocumentos.setText("Cargar mas Documentos");
+        jBtnCargarDocumentos.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                jBtnCargarDocumentosMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
         jPnlOpciones.setLayout(jPnlOpcionesLayout);
@@ -139,6 +147,11 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBtnCargarDocumentosMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosMouseClicked
+    {//GEN-HEADEREND:event_jBtnCargarDocumentosMouseClicked
+       JFileChooser fc= new JFileChooser();
+    }//GEN-LAST:event_jBtnCargarDocumentosMouseClicked
 
     /**
      * @param args the command line arguments
