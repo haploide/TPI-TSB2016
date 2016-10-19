@@ -26,7 +26,10 @@ public class Vocabulario
 
         for (int i = 0; i < tokens.length; i++)
         {
-            System.out.println(tokens[i]);
+            if (!tokens[i].isEmpty())
+            {
+                System.out.println(tokens[i]);
+            }
         }
 
     }
