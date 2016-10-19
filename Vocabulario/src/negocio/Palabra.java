@@ -31,6 +31,11 @@ public class Palabra implements Comparable<Palabra>
         this.frecuencia=1;
     }
     
+    public boolean contains(String str)
+    {
+        return documentos.contains(str);
+    }
+    
     public void incrementarFrecuencia()
     {
         frecuencia++;
@@ -60,6 +65,14 @@ public class Palabra implements Comparable<Palabra>
     {
         return palabra.compareTo(o.palabra);
     }
+
+    @Override
+    public String toString()
+    {
+        return "Palabra{" + "palabra=" + palabra + ", frecuencia=" + frecuencia + ", documentos=" + documentos + '}';
+    }
+
+    
     
     
 }

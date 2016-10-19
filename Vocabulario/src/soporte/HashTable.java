@@ -54,11 +54,17 @@ public class HashTable
                 cantidad++;
                 x.agregarDocumento(doc);
                 tabla[index] = x;
+                System.out.println("Agregada: "+tabla[index]+" en :"+ index);
                 found = true;
             } else if (tabla[index].equals(x))
             {
                 tabla[index].incrementarFrecuencia();
-                tabla[index].agregarDocumento(doc);
+                
+                if(!tabla[index].contains(doc))
+                {
+                    tabla[index].agregarDocumento(doc);
+                }
+                System.out.println("Agregada: "+tabla[index]+" en :"+ index);
                 found = true;
             } else
             {
@@ -161,5 +167,6 @@ public class HashTable
     {
         return cantidad;
     }
+    
 
 }
