@@ -69,7 +69,7 @@ public class Palabra implements Comparable<Palabra>
     @Override
     public String toString()
     {
-        return "Palabra{" + "palabra=" + palabra + ", frecuencia=" + frecuencia + ", documentos=" + documentos + '}';
+        return "Palabra{" + "palabra=" + palabra + ", frecuencia=" + frecuencia + ", documentos=" + documentos.toString() + '}';
     }
 
     

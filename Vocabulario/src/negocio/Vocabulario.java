@@ -28,12 +28,18 @@ public class Vocabulario
         {
             if (!tokens[i].isEmpty())
             {
-//                Palabra  x =  new Palabra(tokens[i]);
-//                ht.put(x, f.getName());
-                System.out.println(tokens[i].toLowerCase());
+                Palabra  x =  new Palabra(tokens[i].toLowerCase());
+                ht.put(x, f.getName());
+//                System.out.println(tokens[i].toLowerCase());
             }
         }
 
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Vocabulario{" + "ht=" + ht + '}';
     }
 
     public void leerArchivo(File f)

@@ -12,7 +12,7 @@ public class HashTable
     {
         if (n <= 0)
         {
-            n = 997;
+            n = 11;
         }
 
         tabla = new Palabra[n];
@@ -22,7 +22,7 @@ public class HashTable
 
     public HashTable()
     {
-        this(997);
+        this(11);
     }
 
     private int hash(int k)
@@ -39,7 +39,7 @@ public class HashTable
             return;
         }
 
-        if (averageLength() >= 8)
+        if (averageLength() >= 0.8)
         {
             rehash();
         }
@@ -54,7 +54,7 @@ public class HashTable
                 cantidad++;
                 x.agregarDocumento(doc);
                 tabla[index] = x;
-                System.out.println("Agregada: "+tabla[index]+" en :"+ index);
+                
                 found = true;
             } else if (tabla[index].equals(x))
             {
@@ -64,7 +64,6 @@ public class HashTable
                 {
                     tabla[index].agregarDocumento(doc);
                 }
-                System.out.println("Agregada: "+tabla[index]+" en :"+ index);
                 found = true;
             } else
             {
@@ -166,6 +165,12 @@ public class HashTable
     public int getCantidad()
     {
         return cantidad;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "HashTable{" + "tabla=" + tabla + ", cantidad=" + cantidad + '}';
     }
     
 
