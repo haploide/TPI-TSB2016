@@ -13,12 +13,12 @@ public class Vocabulario
     private File f;
     private String str = "";
 
-    public Vocabulario(File f)
+    public Vocabulario()
     {
-        this.f = f;
+
     }
 
-    public void parserTexto( String str)
+    public void parserTexto(String str)
     {
         String delims = "[ \\p{Punct}¿¡0123456789ªº\\<\\>\\«\\»]+";
 
@@ -28,9 +28,8 @@ public class Vocabulario
         {
             if (!tokens[i].isEmpty())
             {
-                Palabra  x =  new Palabra(tokens[i].toLowerCase());
+                Palabra x = new Palabra(tokens[i].toLowerCase());
                 ht.put(x, f.getName());
-//                System.out.println(tokens[i].toLowerCase());
             }
         }
 
@@ -44,26 +43,23 @@ public class Vocabulario
 
     public void leerArchivo(File f)
     {
-     
- 
-        try 
+        this.f = f;
+
+        try
         {
-            Scanner sc = new Scanner(new FileInputStream(f),"ISO-8859-1");
-            
-            
+            Scanner sc = new Scanner(new FileInputStream(f), "ISO-8859-1");
+
             while (sc.hasNextLine())
             {
                 String str = sc.nextLine();
-               
+
                 parserTexto(str);
 
-//                System.out.println(str);
             }
         } catch (FileNotFoundException | IllegalStateException e)
         {
-            System.out.println("No existe el archivo de entrada..."+e.getMessage());
+            System.out.println("No existe el archivo de entrada..." + e.getMessage());
         }
-        
-        
+
     }
 }
