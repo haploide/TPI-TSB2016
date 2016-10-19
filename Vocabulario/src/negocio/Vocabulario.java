@@ -1,10 +1,8 @@
 package negocio;
 
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 import soporte.HashTable;
 
@@ -54,18 +52,23 @@ public class Vocabulario
 //        }        
 //     
 
-        try (Scanner sc = new Scanner(f))
+        try 
         {
+            Scanner sc = new Scanner(new FileInputStream(f),"ISO-8859-1");
+            
+            
             while (sc.hasNextLine())
             {
                 String str = sc.nextLine();
-                parserTexto(str);
+               // parserTexto(str);
 
-//                System.out.println(str);
+                System.out.println(str);
             }
-        } catch (FileNotFoundException e)
+        } catch (FileNotFoundException | IllegalStateException e)
         {
-            System.out.println("No existe el archivo de entrada...");
+            System.out.println("No existe el archivo de entrada..."+e.getMessage());
         }
+        
+        
     }
 }
