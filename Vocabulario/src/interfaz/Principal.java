@@ -19,9 +19,9 @@ public class Principal
     {
          File arch = new File("C:\\Users\\pablo\\Desktop\\TSB 2016\\00 TRABAJO PRACTICO\\16082-8.txt");
          
-         Vocabulario voc = new Vocabulario(arch);
-         voc.leerArchivo(arch);
-         System.out.println(voc.toString());
+         //Vocabulario voc = new Vocabulario(arch);
+         //voc.leerArchivo(arch);
+         //System.out.println(voc.toString());
          
          
     }

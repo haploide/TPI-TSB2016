@@ -1,9 +1,15 @@
 
 package interfaz;
 
+import java.io.File;
+import java.util.LinkedList;
+import negocio.Vocabulario;
+
 
 public class VocabularioFrame extends javax.swing.JFrame
 {
+    private Vocabulario voc;
+    private LinkedList<File> colaTareas;
 
     /**
      * Creates new form Vocabulario
@@ -11,6 +17,8 @@ public class VocabularioFrame extends javax.swing.JFrame
     public VocabularioFrame()
     {
         initComponents();
+        voc= new Vocabulario();
+        colaTareas= new LinkedList<>();
     }
 
     /**
@@ -23,17 +31,110 @@ public class VocabularioFrame extends javax.swing.JFrame
     private void initComponents()
     {
 
+        jPnlPalabras = new javax.swing.JPanel();
+        jScllPalabras = new javax.swing.JScrollPane();
+        jTblGrillaPalabras = new javax.swing.JTable();
+        jPnlOpciones = new javax.swing.JPanel();
+        jLblFiltro = new javax.swing.JLabel();
+        jTflFiltro = new javax.swing.JTextField();
+        jBtnFiltrar = new javax.swing.JButton();
+        jBtnCargarDocumentos = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Vocabulario");
+
+        jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
+
+        jTblGrillaPalabras.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScllPalabras.setViewportView(jTblGrillaPalabras);
+
+        javax.swing.GroupLayout jPnlPalabrasLayout = new javax.swing.GroupLayout(jPnlPalabras);
+        jPnlPalabras.setLayout(jPnlPalabrasLayout);
+        jPnlPalabrasLayout.setHorizontalGroup(
+            jPnlPalabrasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPnlPalabrasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScllPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPnlPalabrasLayout.setVerticalGroup(
+            jPnlPalabrasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPnlPalabrasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScllPalabras, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPnlOpciones.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
+
+        jLblFiltro.setText("Filtro");
+
+        jBtnFiltrar.setIcon(new javax.swing.ImageIcon(".\\resource\\embudo24.png"));
+        jBtnFiltrar.setText("Filtar");
+
+        jBtnCargarDocumentos.setIcon(new javax.swing.ImageIcon(".\\resource\\agregar24.png"));
+        jBtnCargarDocumentos.setText("Cargar mas Documentos");
+
+        javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
+        jPnlOpciones.setLayout(jPnlOpcionesLayout);
+        jPnlOpcionesLayout.setHorizontalGroup(
+            jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                        .addComponent(jLblFiltro)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jBtnFiltrar)
+                    .addComponent(jBtnCargarDocumentos))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+        jPnlOpcionesLayout.setVerticalGroup(
+            jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLblFiltro)
+                    .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jBtnFiltrar)
+                .addGap(28, 28, 28)
+                .addComponent(jBtnCargarDocumentos)
+                .addContainerGap(244, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPnlPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPnlPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPnlOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -86,5 +187,13 @@ public class VocabularioFrame extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBtnCargarDocumentos;
+    private javax.swing.JButton jBtnFiltrar;
+    private javax.swing.JLabel jLblFiltro;
+    private javax.swing.JPanel jPnlOpciones;
+    private javax.swing.JPanel jPnlPalabras;
+    private javax.swing.JScrollPane jScllPalabras;
+    private javax.swing.JTable jTblGrillaPalabras;
+    private javax.swing.JTextField jTflFiltro;
     // End of variables declaration//GEN-END:variables
 }
