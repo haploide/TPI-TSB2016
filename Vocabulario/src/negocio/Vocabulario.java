@@ -28,7 +28,9 @@ public class Vocabulario
         {
             if (!tokens[i].isEmpty())
             {
-                System.out.println(tokens[i]);
+                Palabra  x =  new Palabra(tokens[i]);
+                ht.put(x, f.getName());
+//                System.out.println(tokens[i]);
             }
         }
 
