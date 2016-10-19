@@ -29,9 +29,10 @@ public class Documento
         try
         {
             Connection connection = abrirConexion();
-            String query = "INSERT INTO Documento (documento) VALUES( ?,? )";
+            String query = "INSERT INTO Documento VALUES(1,? )";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(2, doc);
+            preparedStmt.setString(1, doc);
+             
             preparedStmt.executeUpdate();
 
             preparedStmt.close();
