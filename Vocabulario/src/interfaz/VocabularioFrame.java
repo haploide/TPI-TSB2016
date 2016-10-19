@@ -1,16 +1,22 @@
-
 package interfaz;
 
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import negocio.Vocabulario;
-
 
 public class VocabularioFrame extends javax.swing.JFrame
 {
+
     private Vocabulario voc;
     private LinkedList<File> colaTareas;
+    
 
     /**
      * Creates new form Vocabulario
@@ -18,8 +24,20 @@ public class VocabularioFrame extends javax.swing.JFrame
     public VocabularioFrame()
     {
         initComponents();
-        voc= new Vocabulario();
-        colaTareas= new LinkedList<>();
+        voc = new Vocabulario();
+        colaTareas = new LinkedList<>();
+    }
+
+    public Image obtenerImagen()
+    {
+        try
+        {
+            return ImageIO.read(new File(".\\resource\\letras16.png"));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(VocabularioFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
@@ -40,9 +58,12 @@ public class VocabularioFrame extends javax.swing.JFrame
         jTflFiltro = new javax.swing.JTextField();
         jBtnFiltrar = new javax.swing.JButton();
         jBtnCargarDocumentos = new javax.swing.JButton();
+        jPbrCargando = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Vocabulario");
+        setIconImage(obtenerImagen()
+        );
 
         jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
 
@@ -102,13 +123,17 @@ public class VocabularioFrame extends javax.swing.JFrame
             .addGroup(jPnlOpcionesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPbrCargando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(jLblFiltro)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jBtnFiltrar)
-                    .addComponent(jBtnCargarDocumentos))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(jLblFiltro)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jBtnFiltrar)
+                            .addComponent(jBtnCargarDocumentos))
+                        .addGap(0, 24, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPnlOpcionesLayout.setVerticalGroup(
             jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +146,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                 .addComponent(jBtnFiltrar)
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPbrCargando, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(199, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,7 +177,31 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void jBtnCargarDocumentosMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosMouseClicked
     {//GEN-HEADEREND:event_jBtnCargarDocumentosMouseClicked
-       JFileChooser fc= new JFileChooser();
+        JFileChooser fc = new JFileChooser("../");
+        fc.setMultiSelectionEnabled(true);
+
+        FileNameExtensionFilter filtros = new FileNameExtensionFilter("Documentos de Texto (*.txt)", "txt");
+        fc.setFileFilter(filtros);
+
+        int result = fc.showOpenDialog(this);
+
+        switch (result)
+        {
+            case JFileChooser.APPROVE_OPTION:
+                
+                for (File tarea : fc.getSelectedFiles())
+                {
+                    colaTareas.add(tarea);
+                }
+                break;
+
+            case JFileChooser.CANCEL_OPTION:
+                   
+                break;
+
+        }
+        
+        
     }//GEN-LAST:event_jBtnCargarDocumentosMouseClicked
 
     /**
@@ -203,6 +254,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JButton jBtnCargarDocumentos;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JLabel jLblFiltro;
+    private javax.swing.JProgressBar jPbrCargando;
     private javax.swing.JPanel jPnlOpciones;
     private javax.swing.JPanel jPnlPalabras;
     private javax.swing.JScrollPane jScllPalabras;
