@@ -20,12 +20,12 @@ import negocio.Palabra;
  */
 public class PalabraXDocumentoJDBC
 {
-    public static void Insert(int p, int d)
+    public static void Insert(int p, int d, Connection connection )
     {
 
         try
         {
-            Connection connection = abrirConexion();
+           // Connection connection = abrirConexion();
             String sql = "INSERT INTO documentoXpalabra (id_documento, id_palabra) VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
            
@@ -36,12 +36,6 @@ public class PalabraXDocumentoJDBC
             preparedStmt.close();
             connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);

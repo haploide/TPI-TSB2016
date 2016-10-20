@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
+import negocio.Palabra;
 import negocio.Vocabulario;
 import soporte.WorkerHashing;
 
@@ -24,9 +25,10 @@ public class VocabularioFrame extends javax.swing.JFrame
      */
     public VocabularioFrame()
     {
-        initComponents();
         voc = new Vocabulario();
         colaTareas = new LinkedList<>();
+        initComponents();
+
     }
 
     public Image obtenerImagen()
@@ -70,19 +72,8 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
 
-        jTblGrillaPalabras.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String []
-            {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTblGrillaPalabras.setModel(new ModeloTabla()
+        );
         jScllPalabras.setViewportView(jTblGrillaPalabras);
 
         javax.swing.GroupLayout jPnlPalabrasLayout = new javax.swing.GroupLayout(jPnlPalabras);
@@ -239,7 +230,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         if (guardo)
         {
-            
 
         } else
         {
@@ -308,35 +298,62 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JTextField jTflFiltro;
     // End of variables declaration//GEN-END:variables
 
-
-
-class ModeloTabla extends AbstractTableModel{
-
-    @Override
-    public int getRowCount()
+    class ModeloTabla extends AbstractTableModel
     {
-      return voc.getSizeHash();
+
+        @Override
+        public int getRowCount()
+        {
+            return voc.getSizeHash();
+
+        }
+
+        @Override
+        public int getColumnCount()
+        {
+            return 3;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            Palabra tabla[] = voc.getTabla();
+
+            if (tabla[rowIndex]!=null)
+            {
+                switch (columnIndex)
+                {
+                    case 0:
+                        
+                        return tabla[rowIndex].getPalabra();
+                    
+                    case 1:
+                        
+                        return tabla[rowIndex].getFrecuencia();
+                    
+                    case 2:
+                        
+                        return tabla[rowIndex].getDocumentos().toString();
+                    
+                }
+            }
+            
+            return "-------";
+
+            
+        }
+
+        @Override
+        public String getColumnName(int column)
+        {
+            String nombres[] =
+            {
+                "Palabra", "Frecuencia", "Cant Documentos"
+            };
+
+            return nombres[column];
+        }
+
     }
 
-    @Override
-    public int getColumnCount()
-    {
-        return 3;
-    }
-
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    @Override
-    public String getColumnName(int column){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
-
-
-}
-
-

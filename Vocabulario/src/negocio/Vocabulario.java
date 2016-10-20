@@ -18,6 +18,11 @@ public class Vocabulario
     {
 
     }
+    
+    public Palabra[] getTabla()
+    {
+     return ht.getTabla();
+    }
 
     public int getSizeHash(){
         return ht.getCantidad();

@@ -30,7 +30,6 @@ public class PalablaJDBC
     public static int Insert(Palabra p)
     {
         ArrayList<Integer> idDoc = new ArrayList<>();
-    
 
         int id = 0;
 
@@ -38,19 +37,18 @@ public class PalablaJDBC
         {
             if (getIdPalabra(p.getPalabra()) == 0)
             {
-            for (String pal : p.getDocumentos())
-            {
-                if (DocumentoJDBC.getIdDocumento(pal) == 0)
+                for (String pal : p.getDocumentos())
                 {
-                    idDoc.add(DocumentoJDBC.Insert(pal));
-                    
+                    if (DocumentoJDBC.getIdDocumento(pal) == 0)
+                    {
+                        idDoc.add(DocumentoJDBC.Insert(pal));
 
-                } else
-                {
-                    idDoc.add(DocumentoJDBC.getIdDocumento(pal));
+                    } else
+                    {
+                        idDoc.add(DocumentoJDBC.getIdDocumento(pal));
+                    }
                 }
-            }
-           
+
                 Connection connection = abrirConexion();
                 String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
                 PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -61,7 +59,7 @@ public class PalablaJDBC
                 id = getIdPalabra(p.getPalabra());
                 for (Integer integer : idDoc)
                 {
-                    PalabraXDocumentoJDBC.Insert(id, integer);
+                    PalabraXDocumentoJDBC.Insert(id, integer, connection);
                 }
                 connection.commit();
                 preparedStmt.close();
@@ -69,8 +67,9 @@ public class PalablaJDBC
 
             } else
             {
-                upDate(p);
-                
+                Connection connection = abrirConexion();
+                upDate(p, connection);
+
             }
 
         } catch (IOException ex)
@@ -88,46 +87,38 @@ public class PalablaJDBC
 
     }
 
-    public static void upDate(Palabra p)
+    public static void upDate(Palabra p, Connection connection)
     {
         ArrayList<Integer> idDoc = new ArrayList<>();
         try
-        { 
-        Connection connection = abrirConexion();
-        String sql = "UPDATE Palabra set frecuencia = ? WHERE palabra = ?";
-        PreparedStatement preparedStmt = connection.prepareStatement(sql);
+        {
+            //Connection connection = abrirConexion();
+            String sql = "UPDATE Palabra set frecuencia = ? WHERE palabra = ?";
+            PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
-        preparedStmt.setString(2, p.getPalabra());
-        preparedStmt.setInt(1, p.getFrecuencia());
-        preparedStmt.executeUpdate();
-        for (String pal : p.getDocumentos())
+            preparedStmt.setString(2, p.getPalabra());
+            preparedStmt.setInt(1, p.getFrecuencia());
+            preparedStmt.executeUpdate();
+            for (String pal : p.getDocumentos())
             {
                 if (DocumentoJDBC.getIdDocumento(pal) == 0)
                 {
                     idDoc.add(DocumentoJDBC.Insert(pal));
-                    
 
-                } 
-            }
-        for (Integer integer : idDoc)
-                {
-                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra()), integer);
                 }
-       
-        connection.commit();
-        preparedStmt.close();
-        connection.close();
-         } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (Integer integer : idDoc)
+            {
+                PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra()), integer, connection);
+            }
+
+            connection.commit();
+            preparedStmt.close();
+            connection.close();
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-
 
     }
 
