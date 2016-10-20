@@ -36,17 +36,17 @@ public class PalablaJDBC
         try
         {
             Connection connection = abrirConexion();
-            if (getIdPalabra(p.getPalabra(),connection) == 0)
+            if (getIdPalabra(p.getPalabra(), connection) == 0)
             {
                 for (String pal : p.getDocumentos())
                 {
-                    if (DocumentoJDBC.getIdDocumento(pal,connection) == 0)
+                    if (DocumentoJDBC.getIdDocumento(pal, connection) == 0)
                     {
-                        idDoc.add(DocumentoJDBC.Insert(pal,connection));
+                        idDoc.add(DocumentoJDBC.Insert(pal, connection));
 
                     } else
                     {
-                        idDoc.add(DocumentoJDBC.getIdDocumento(pal,connection));
+                        idDoc.add(DocumentoJDBC.getIdDocumento(pal, connection));
                     }
                 }
 
@@ -57,14 +57,14 @@ public class PalablaJDBC
                 preparedStmt.setString(1, p.getPalabra());
                 preparedStmt.setInt(2, p.getFrecuencia());
                 preparedStmt.executeUpdate();
-                id = getIdPalabra(p.getPalabra(),connection);
+                id = getIdPalabra(p.getPalabra(), connection);
                 for (Integer integer : idDoc)
                 {
                     PalabraXDocumentoJDBC.Insert(id, integer, connection);
                 }
-                connection.commit();
+//                connection.commit();
                 preparedStmt.close();
-                connection.close();
+//                connection.close();
 
             } else
             {
@@ -72,6 +72,8 @@ public class PalablaJDBC
                 upDate(p, connection);
 
             }
+            connection.commit();
+            connection.close();
 
         } catch (IOException ex)
         {
@@ -100,16 +102,14 @@ public class PalablaJDBC
             preparedStmt.setString(2, p.getPalabra());
             preparedStmt.setInt(1, p.getFrecuencia());
             preparedStmt.executeUpdate();
-            
-          
 
-            connection.commit();
+//            connection.commit();
             for (String pal : p.getDocumentos())
             {
-                if (DocumentoJDBC.getIdDocumento(pal,connection) == 0)
+                if (DocumentoJDBC.getIdDocumento(pal, connection) == 0)
                 {
-                    
-                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(),connection),DocumentoJDBC.Insert(pal,connection), connection);
+
+                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.Insert(pal, connection), connection);
 
                 }
             }
@@ -122,7 +122,7 @@ public class PalablaJDBC
 
     }
 
-    public static int getIdPalabra(String palabra,Connection connection )
+    public static int getIdPalabra(String palabra, Connection connection)
     {
         int id = 0;
         try
@@ -143,15 +143,14 @@ public class PalablaJDBC
             statement.close();
 //            connection.close();
 
-        } 
-//        catch (IOException ex)
-//        {
-//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        catch (ClassNotFoundException ex)
-//        {
-//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        } //        catch (IOException ex)
+        //        {
+        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+        //        catch (ClassNotFoundException ex)
+        //        {
+        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
         catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);

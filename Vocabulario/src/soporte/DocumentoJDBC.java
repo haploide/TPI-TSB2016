@@ -37,7 +37,7 @@ public class DocumentoJDBC
             preparedStmt.setString(1, doc);
             preparedStmt.executeUpdate();
             
-            connection.commit();
+//            connection.commit();
             preparedStmt.close();
 //            connection.close();
 

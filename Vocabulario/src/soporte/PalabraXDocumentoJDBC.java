@@ -32,7 +32,7 @@ public class PalabraXDocumentoJDBC
             preparedStmt.setInt(1, d);
             preparedStmt.setInt(2, p);
             preparedStmt.executeUpdate();
-            connection.commit();
+//            connection.commit();
             preparedStmt.close();
 //            connection.close();
 
