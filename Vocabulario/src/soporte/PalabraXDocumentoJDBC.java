@@ -20,17 +20,17 @@ import negocio.Palabra;
  */
 public class PalabraXDocumentoJDBC
 {
-    public static void Insert(Palabra p, String doc)
+    public static void Insert(int p, int d)
     {
 
         try
         {
             Connection connection = abrirConexion();
-            String sql = "INSERT INTO palabraXdocumento VALUES(?,?)";
+            String sql = "INSERT INTO palabraXdocumento (id_documento, id_palabla) VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
            
-//            preparedStmt.setInt(1, p.getPalabra());
-//            preparedStmt.setInt(2, p.getFrecuencia());
+            preparedStmt.setInt(1, d);
+            preparedStmt.setInt(2, p);
             preparedStmt.executeUpdate();
             connection.commit();
             preparedStmt.close();

@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.*;
@@ -24,11 +25,27 @@ public class PalablaJDBC
     {
     }
     
-     public static void Insert(Palabra p)
+     public static int Insert(Palabra p)
     {
+        ArrayList<Integer> idDoc = new ArrayList <>();
+               
+         int id=0;
 
         try
         {
+            for (String pal : p.getDocumentos())
+            {
+                if(DocumentoJDBC.getIdDocumento(pal)== 0)
+                {
+                    idDoc.add(DocumentoJDBC.Insert(pal));
+                    
+                }
+                else
+                {
+                    idDoc.add(DocumentoJDBC.getIdDocumento(pal));
+                }
+            }
+            
             Connection connection = abrirConexion();
             String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
@@ -36,6 +53,11 @@ public class PalablaJDBC
             preparedStmt.setString(1, p.getPalabra());
             preparedStmt.setInt(2, p.getFrecuencia());
             preparedStmt.executeUpdate();
+            id=getIdPalabra(p.getPalabra());
+            for (Integer integer : idDoc)
+            {
+                PalabraXDocumentoJDBC.Insert(id, integer);
+            }
             connection.commit();
             preparedStmt.close();
             connection.close();
@@ -50,6 +72,8 @@ public class PalablaJDBC
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return id;
 
     }
     public static int getIdPalabra(String palabra)
