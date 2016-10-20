@@ -72,22 +72,5 @@ public class Vocabulario
 
     }
     
-    public boolean guardarEnBD()
-    {
-        Palabra tabla[]=ht.getTabla();
-        
-        for (Palabra palabra : tabla)
-        {
-            try
-            {
-                PalablaJDBC.Insert(palabra);
-                
-            } catch (Exception e)
-            {
-                
-            }
-        }
-        
-        return true;
-    }
+    
 }

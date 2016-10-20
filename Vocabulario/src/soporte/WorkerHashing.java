@@ -1,11 +1,11 @@
 package soporte;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import negocio.Vocabulario;
 
@@ -13,15 +13,19 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
 {
 
     private final JLabel jlblResultado;
+    private final JLabel jLlbCantidad;
     private final JProgressBar jPbrProgreso;
+    private final JTable jTblGrillaPalabras;
     private int incremento;
     private final Vocabulario voc;
     private final LinkedList<File> colaTareas;
 
-    public WorkerHashing(JLabel jlblResultado, JProgressBar jPbrProgreso, int cantidad, Vocabulario voc, LinkedList<File> cola)
+    public WorkerHashing(JLabel jlblResultado, JLabel jLlbCantidad, JProgressBar jPbrProgreso, JTable jTblGrillaPalabras, int cantidad, Vocabulario voc, LinkedList<File> cola)
     {
         this.jlblResultado = jlblResultado;
+        this.jLlbCantidad = jLlbCantidad;
         this.jPbrProgreso = jPbrProgreso;
+        this.jTblGrillaPalabras = jTblGrillaPalabras;
         this.voc = voc;
         this.colaTareas = cola;
         incremento = 100 / cantidad;
@@ -30,13 +34,15 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
     @Override
     protected Boolean doInBackground() throws Exception
     {
+        int aux=incremento;
+        
         for (File tarea : colaTareas)
         {
             voc.leerArchivo(tarea);
 
-            publish(incremento);
+            publish(aux);
 
-            incremento += incremento;
+            aux += incremento;
 
         }
 
@@ -45,18 +51,20 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
 
     @Override
     public void done()
-    {   
+    {
         jlblResultado.setVisible(true);
         jlblResultado.setText("Carga Finalizada!");
-       // jlblResultado.setForeground(Color.BLUE);
-        
+        jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
+        jTblGrillaPalabras.updateUI();
 
     }
-    
+
     @Override
     public void process(List<Integer> incremento)
     {
         jPbrProgreso.setValue(incremento.get(0));
+        jlblResultado.setText("Cargando...!");
+
     }
 
 }
