@@ -62,8 +62,10 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnFiltrar = new javax.swing.JButton();
         jBtnCargarDocumentos = new javax.swing.JButton();
         jPbrCargando = new javax.swing.JProgressBar();
-        jLlbResultado = new javax.swing.JLabel();
         jBtnGuardar = new javax.swing.JButton();
+        jPnlStatusBar = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLlbResultado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Vocabulario");
@@ -137,7 +139,6 @@ public class VocabularioFrame extends javax.swing.JFrame
                                 .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jBtnFiltrar)
                             .addComponent(jBtnCargarDocumentos)
-                            .addComponent(jLlbResultado)
                             .addComponent(jBtnGuardar))
                         .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -154,17 +155,37 @@ public class VocabularioFrame extends javax.swing.JFrame
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
                 .addGap(18, 18, 18)
-                .addComponent(jPbrCargando, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLlbResultado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addComponent(jPbrCargando, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                 .addComponent(jBtnGuardar)
                 .addContainerGap())
         );
 
         jPbrCargando.setStringPainted(true);
         jPbrCargando.setVisible(false);
-        jLlbResultado.setVisible(false);
+
+        jPnlStatusBar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+
+        jLlbResultado.setText("Listo");
+
+        javax.swing.GroupLayout jPnlStatusBarLayout = new javax.swing.GroupLayout(jPnlStatusBar);
+        jPnlStatusBar.setLayout(jPnlStatusBarLayout);
+        jPnlStatusBarLayout.setHorizontalGroup(
+            jPnlStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPnlStatusBarLayout.createSequentialGroup()
+                .addComponent(jLlbResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPnlStatusBarLayout.setVerticalGroup(
+            jPnlStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addComponent(jLlbResultado, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,15 +197,17 @@ public class VocabularioFrame extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPnlPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
+            .addComponent(jPnlStatusBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPnlPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPnlOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPnlOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPnlPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPnlStatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -293,7 +316,9 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JProgressBar jPbrCargando;
     private javax.swing.JPanel jPnlOpciones;
     private javax.swing.JPanel jPnlPalabras;
+    private javax.swing.JPanel jPnlStatusBar;
     private javax.swing.JScrollPane jScllPalabras;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTblGrillaPalabras;
     private javax.swing.JTextField jTflFiltro;
     // End of variables declaration//GEN-END:variables
