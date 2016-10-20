@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import negocio.Vocabulario;
+import soporte.WorkerHashing;
 
 public class VocabularioFrame extends javax.swing.JFrame
 {
@@ -59,6 +60,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnFiltrar = new javax.swing.JButton();
         jBtnCargarDocumentos = new javax.swing.JButton();
         jPbrCargando = new javax.swing.JProgressBar();
+        jLlbResultado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Vocabulario");
@@ -131,7 +133,8 @@ public class VocabularioFrame extends javax.swing.JFrame
                                 .addGap(18, 18, 18)
                                 .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jBtnFiltrar)
-                            .addComponent(jBtnCargarDocumentos))
+                            .addComponent(jBtnCargarDocumentos)
+                            .addComponent(jLlbResultado))
                         .addGap(0, 24, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,8 +151,13 @@ public class VocabularioFrame extends javax.swing.JFrame
                 .addComponent(jBtnCargarDocumentos)
                 .addGap(18, 18, 18)
                 .addComponent(jPbrCargando, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLlbResultado)
+                .addContainerGap(193, Short.MAX_VALUE))
         );
+
+        jPbrCargando.setVisible(false);
+        jLlbResultado.setVisible(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,6 +209,11 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         }
         
+        jPbrCargando.setVisible(true);
+        
+        WorkerHashing worker = new WorkerHashing(jLlbResultado, jPbrCargando, colaTareas.size(), voc, colaTareas);
+        
+        worker.execute();
         
     }//GEN-LAST:event_jBtnCargarDocumentosMouseClicked
 
@@ -254,6 +267,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JButton jBtnCargarDocumentos;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JLabel jLblFiltro;
+    private javax.swing.JLabel jLlbResultado;
     private javax.swing.JProgressBar jPbrCargando;
     private javax.swing.JPanel jPnlOpciones;
     private javax.swing.JPanel jPnlPalabras;
