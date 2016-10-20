@@ -61,7 +61,7 @@ public class WorkerGuardar extends SwingWorker<Boolean, Double>
         String str=incremento.get(0).toString();
         String st[]=str.split("\\p{Punct}");
         
-        
+        jPbrProgreso.setString(st[0]+"."+st[1].substring(0, 2)+"%");
         jPbrProgreso.setValue(Integer.parseInt(st[0]));
         jlblResultado.setText("Guardando...");
 

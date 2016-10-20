@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import negocio.Palabra;
@@ -64,6 +65,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnFiltrar = new javax.swing.JButton();
         jBtnCargarDocumentos = new javax.swing.JButton();
         jBtnGuardar = new javax.swing.JButton();
+        jBtnCargarVoc = new javax.swing.JButton();
         jPnlStatusBar = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jLlbResultado = new javax.swing.JLabel();
@@ -131,6 +133,9 @@ public class VocabularioFrame extends javax.swing.JFrame
             }
         });
 
+        jBtnCargarVoc.setIcon(new javax.swing.ImageIcon(".\\resource\\cargar24.png"));
+        jBtnCargarVoc.setText("Cargar Vocabulario");
+
         javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
         jPnlOpciones.setLayout(jPnlOpcionesLayout);
         jPnlOpcionesLayout.setHorizontalGroup(
@@ -144,7 +149,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                         .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jBtnFiltrar)
                     .addComponent(jBtnCargarDocumentos)
-                    .addComponent(jBtnGuardar))
+                    .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jBtnCargarVoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBtnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPnlOpcionesLayout.setVerticalGroup(
@@ -158,7 +165,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                 .addComponent(jBtnFiltrar)
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
+                .addComponent(jBtnCargarVoc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jBtnGuardar)
                 .addContainerGap())
         );
@@ -260,12 +269,18 @@ public class VocabularioFrame extends javax.swing.JFrame
     private void jBtnGuardarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnGuardarActionPerformed
     {//GEN-HEADEREND:event_jBtnGuardarActionPerformed
         
-        
-        
-        WorkerGuardar worker= new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
-        
-        worker.execute();
+      int result= JOptionPane.showConfirmDialog(this,"Esta acción tomara tiempo\n¿Está seguro de continuar?","Confirmar",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+       
+        if (result==JOptionPane.YES_OPTION)
+        {
+            jBtnGuardar.setEnabled(false);
+            
+            WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
+            
+            worker.execute();
+        }
    
+        
 
     }//GEN-LAST:event_jBtnGuardarActionPerformed
 
@@ -317,6 +332,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCargarDocumentos;
+    private javax.swing.JButton jBtnCargarVoc;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JButton jBtnGuardar;
     private javax.swing.JLabel jLblFiltro;

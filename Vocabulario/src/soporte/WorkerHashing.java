@@ -62,6 +62,7 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
     @Override
     public void process(List<Integer> incremento)
     {
+        jPbrProgreso.setString(incremento.get(0)+".0%");
         jPbrProgreso.setValue(incremento.get(0));
         jlblResultado.setText("Cargando...!");
 
