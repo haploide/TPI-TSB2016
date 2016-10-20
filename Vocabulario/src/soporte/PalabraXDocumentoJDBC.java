@@ -26,7 +26,7 @@ public class PalabraXDocumentoJDBC
         try
         {
             Connection connection = abrirConexion();
-            String sql = "INSERT INTO palabraXdocumento (id_documento, id_palabla) VALUES(?,?)";
+            String sql = "INSERT INTO documentoXpalabra (id_documento, id_palabra) VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
            
             preparedStmt.setInt(1, d);

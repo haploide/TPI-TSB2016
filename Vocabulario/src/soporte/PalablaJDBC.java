@@ -36,6 +36,8 @@ public class PalablaJDBC
 
         try
         {
+             if (getIdPalabra(p.getPalabra()) == 0)
+            {
             for (String pal : p.getDocumentos())
             {
                 if (DocumentoJDBC.getIdDocumento(pal) == 0)
@@ -48,8 +50,7 @@ public class PalablaJDBC
                     idDoc.add(DocumentoJDBC.getIdDocumento(pal));
                 }
             }
-            if (getIdPalabra(p.getPalabra()) == 0)
-            {
+           
                 Connection connection = abrirConexion();
                 String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
                 PreparedStatement preparedStmt = connection.prepareStatement(sql);
