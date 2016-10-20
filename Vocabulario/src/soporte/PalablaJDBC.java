@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package soporte;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.*;
+
 /**
  *
  * @author pablo
@@ -24,43 +26,51 @@ public class PalablaJDBC
     public PalablaJDBC()
     {
     }
-    
-     public static int Insert(Palabra p)
+
+    public static int Insert(Palabra p)
     {
-        ArrayList<Integer> idDoc = new ArrayList <>();
-               
-         int id=0;
+        ArrayList<Integer> idDoc = new ArrayList<>();
+    
+
+        int id = 0;
 
         try
         {
             for (String pal : p.getDocumentos())
             {
-                if(DocumentoJDBC.getIdDocumento(pal)== 0)
+                if (DocumentoJDBC.getIdDocumento(pal) == 0)
                 {
                     idDoc.add(DocumentoJDBC.Insert(pal));
                     
-                }
-                else
+
+                } else
                 {
                     idDoc.add(DocumentoJDBC.getIdDocumento(pal));
                 }
             }
-            
-            Connection connection = abrirConexion();
-            String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
-            PreparedStatement preparedStmt = connection.prepareStatement(sql);
-           
-            preparedStmt.setString(1, p.getPalabra());
-            preparedStmt.setInt(2, p.getFrecuencia());
-            preparedStmt.executeUpdate();
-            id=getIdPalabra(p.getPalabra());
-            for (Integer integer : idDoc)
+            if (getIdPalabra(p.getPalabra()) == 0)
             {
-                PalabraXDocumentoJDBC.Insert(id, integer);
+                Connection connection = abrirConexion();
+                String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
+                PreparedStatement preparedStmt = connection.prepareStatement(sql);
+
+                preparedStmt.setString(1, p.getPalabra());
+                preparedStmt.setInt(2, p.getFrecuencia());
+                preparedStmt.executeUpdate();
+                id = getIdPalabra(p.getPalabra());
+                for (Integer integer : idDoc)
+                {
+                    PalabraXDocumentoJDBC.Insert(id, integer);
+                }
+                connection.commit();
+                preparedStmt.close();
+                connection.close();
+
+            } else
+            {
+                upDate(p);
+                
             }
-            connection.commit();
-            preparedStmt.close();
-            connection.close();
 
         } catch (IOException ex)
         {
@@ -72,10 +82,40 @@ public class PalablaJDBC
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return id;
 
     }
+
+    public static void upDate(Palabra p)
+    {
+        try
+        { 
+        Connection connection = abrirConexion();
+        String sql = "UPADTE Palabra set frecuencia = ? WHERE palabra = ?";
+        PreparedStatement preparedStmt = connection.prepareStatement(sql);
+
+        preparedStmt.setString(2, p.getPalabra());
+        preparedStmt.setInt(1, p.getFrecuencia());
+        preparedStmt.executeUpdate();
+       
+        connection.commit();
+        preparedStmt.close();
+        connection.close();
+         } catch (IOException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }
+
     public static int getIdPalabra(String palabra)
     {
         int id = 0;
@@ -109,7 +149,8 @@ public class PalablaJDBC
         }
         return id;
     }
-     public static int getFrecuencia(String palabra)
+
+    public static int getFrecuencia(String palabra)
     {
         int fre = 0;
         try
