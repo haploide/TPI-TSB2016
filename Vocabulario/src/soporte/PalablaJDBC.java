@@ -66,16 +66,17 @@ public class PalablaJDBC
 
         return lista;
     }
-    public static Palabra getByFilter(String palabra)
+    public static ArrayList<Palabra> getByFilter(String palabra)
     {
      
-        Palabra  p = null;
+         Palabra p;
+        ArrayList<Palabra> lista = new ArrayList<>();
         LinkedList<String> doc = new LinkedList<>();
         try
         {
 
             Connection connection = abrirConexion();
-            String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra = ? ";
+            String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra like ?% ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, palabra);
 
@@ -83,9 +84,8 @@ public class PalablaJDBC
             while (result.next())
             {
                
-                p = new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1)));
-               
-
+              p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1)));
+                lista.add(p);
             }
             result.close();
             statement.close();
@@ -102,7 +102,7 @@ public class PalablaJDBC
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return p;
+        return lista;
     }
 
     public static int Insert(Palabra p)
