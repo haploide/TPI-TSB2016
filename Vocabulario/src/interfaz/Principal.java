@@ -24,7 +24,7 @@ public class Principal
         DocumentoJDBC d = new DocumentoJDBC();
         Palabra p= new Palabra("petaJensen");
         PalablaJDBC p2= new PalablaJDBC();
-        System.out.println("Id es: "+d.Insert("kamasutra"));
+//        System.out.println("Id es: "+d.Insert("kamasutra"));
 //        p2.Insert(p);
 //        System.out.println("Id es: "+d.getIdDocumento("pito"));
 //        d.Insert("kaka");

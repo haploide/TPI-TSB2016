@@ -34,7 +34,7 @@ public class PalabraXDocumentoJDBC
             preparedStmt.executeUpdate();
             connection.commit();
             preparedStmt.close();
-            connection.close();
+//            connection.close();
 
         } catch (SQLException ex)
         {

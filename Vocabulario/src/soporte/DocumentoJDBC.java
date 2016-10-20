@@ -24,13 +24,13 @@ import java.util.logging.Logger;
 public class DocumentoJDBC
 {
 
-    public static int Insert(String doc)
+    public static int Insert(String doc,Connection connection)
     {
         int id=0;
 
         try
         {
-            Connection connection = abrirConexion();
+//            Connection connection = abrirConexion();
             String sql = "INSERT INTO Documento (documento)  VALUES(?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
@@ -39,30 +39,24 @@ public class DocumentoJDBC
             
             connection.commit();
             preparedStmt.close();
-            connection.close();
+//            connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        id= getIdDocumento(doc);
+        id= getIdDocumento(doc,connection);
         return id;
 
     }
 
-    public static int getIdDocumento(String doc)
+    public static int getIdDocumento(String doc, Connection connection)
     {
         int id = 0;
         try
         {
 
-            Connection connection = abrirConexion();
+//            Connection connection = abrirConexion();
             String sql = "SELECT id_documento FROM Documento WHERE documento = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, doc);
@@ -75,15 +69,17 @@ public class DocumentoJDBC
             }
             result.close();
             statement.close();
-            connection.close();
+//            connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex)
+        } 
+//        catch (IOException ex)
+//        {
+//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex)
+//        {
+//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+//        } 
+        catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }

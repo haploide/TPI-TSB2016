@@ -35,28 +35,29 @@ public class PalablaJDBC
 
         try
         {
-            if (getIdPalabra(p.getPalabra()) == 0)
+            Connection connection = abrirConexion();
+            if (getIdPalabra(p.getPalabra(),connection) == 0)
             {
                 for (String pal : p.getDocumentos())
                 {
-                    if (DocumentoJDBC.getIdDocumento(pal) == 0)
+                    if (DocumentoJDBC.getIdDocumento(pal,connection) == 0)
                     {
-                        idDoc.add(DocumentoJDBC.Insert(pal));
+                        idDoc.add(DocumentoJDBC.Insert(pal,connection));
 
                     } else
                     {
-                        idDoc.add(DocumentoJDBC.getIdDocumento(pal));
+                        idDoc.add(DocumentoJDBC.getIdDocumento(pal,connection));
                     }
                 }
 
-                Connection connection = abrirConexion();
+//                Connection connection = abrirConexion();
                 String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
                 PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
                 preparedStmt.setString(1, p.getPalabra());
                 preparedStmt.setInt(2, p.getFrecuencia());
                 preparedStmt.executeUpdate();
-                id = getIdPalabra(p.getPalabra());
+                id = getIdPalabra(p.getPalabra(),connection);
                 for (Integer integer : idDoc)
                 {
                     PalabraXDocumentoJDBC.Insert(id, integer, connection);
@@ -67,7 +68,7 @@ public class PalablaJDBC
 
             } else
             {
-                Connection connection = abrirConexion();
+//                Connection connection = abrirConexion();
                 upDate(p, connection);
 
             }
@@ -99,22 +100,21 @@ public class PalablaJDBC
             preparedStmt.setString(2, p.getPalabra());
             preparedStmt.setInt(1, p.getFrecuencia());
             preparedStmt.executeUpdate();
+            
+          
+
+            connection.commit();
             for (String pal : p.getDocumentos())
             {
-                if (DocumentoJDBC.getIdDocumento(pal) == 0)
+                if (DocumentoJDBC.getIdDocumento(pal,connection) == 0)
                 {
-                    idDoc.add(DocumentoJDBC.Insert(pal));
+                    
+                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(),connection),DocumentoJDBC.Insert(pal,connection), connection);
 
                 }
             }
-            for (Integer integer : idDoc)
-            {
-                PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra()), integer, connection);
-            }
-
-            connection.commit();
             preparedStmt.close();
-            connection.close();
+//            connection.close();
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,13 +122,13 @@ public class PalablaJDBC
 
     }
 
-    public static int getIdPalabra(String palabra)
+    public static int getIdPalabra(String palabra,Connection connection )
     {
         int id = 0;
         try
         {
 
-            Connection connection = abrirConexion();
+//            Connection connection = abrirConexion();
             String sql = "SELECT id_palabra FROM Palabra WHERE palabra = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, palabra);
@@ -141,15 +141,18 @@ public class PalablaJDBC
             }
             result.close();
             statement.close();
-            connection.close();
+//            connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex)
+        } 
+//        catch (IOException ex)
+//        {
+//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        catch (ClassNotFoundException ex)
+//        {
+//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
