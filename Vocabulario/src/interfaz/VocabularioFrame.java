@@ -244,6 +244,8 @@ public class VocabularioFrame extends javax.swing.JFrame
         WorkerHashing worker = new WorkerHashing(jLlbResultado, jPbrCargando, colaTareas.size(), voc, colaTareas);
 
         worker.execute();
+        
+        jTblGrillaPalabras.updateUI();
 
     }//GEN-LAST:event_jBtnCargarDocumentosMouseClicked
 
