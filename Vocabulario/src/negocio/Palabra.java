@@ -15,6 +15,19 @@ public class Palabra implements Comparable<Palabra>
         return palabra;
     }
 
+    public Palabra(String palabra, int frecuencia, LinkedList<String> documento)
+    {
+        this.palabra = palabra;
+        this.frecuencia = frecuencia;
+        this.documentos = documento;
+    }
+
+    public void setDocumentos(LinkedList<String> documentos)
+    {
+        this.documentos = documentos;
+    }
+
+    
     public int getFrecuencia()
     {
         return frecuencia;
