@@ -36,7 +36,7 @@ public class PalablaJDBC
 
         try
         {
-             if (getIdPalabra(p.getPalabra()) == 0)
+            if (getIdPalabra(p.getPalabra()) == 0)
             {
             for (String pal : p.getDocumentos())
             {
@@ -93,12 +93,13 @@ public class PalablaJDBC
         try
         { 
         Connection connection = abrirConexion();
-        String sql = "UPADTE Palabra set frecuencia = ? WHERE palabra = ?";
+        String sql = "UPDATE Palabra set frecuencia = ? WHERE palabra = ?";
         PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
         preparedStmt.setString(2, p.getPalabra());
         preparedStmt.setInt(1, p.getFrecuencia());
         preparedStmt.executeUpdate();
+        
        
         connection.commit();
         preparedStmt.close();
