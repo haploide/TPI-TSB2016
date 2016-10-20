@@ -90,6 +90,7 @@ public class PalablaJDBC
 
     public static void upDate(Palabra p)
     {
+        ArrayList<Integer> idDoc = new ArrayList<>();
         try
         { 
         Connection connection = abrirConexion();
@@ -99,7 +100,19 @@ public class PalablaJDBC
         preparedStmt.setString(2, p.getPalabra());
         preparedStmt.setInt(1, p.getFrecuencia());
         preparedStmt.executeUpdate();
-        
+        for (String pal : p.getDocumentos())
+            {
+                if (DocumentoJDBC.getIdDocumento(pal) == 0)
+                {
+                    idDoc.add(DocumentoJDBC.Insert(pal));
+                    
+
+                } 
+            }
+        for (Integer integer : idDoc)
+                {
+                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra()), integer);
+                }
        
         connection.commit();
         preparedStmt.close();
