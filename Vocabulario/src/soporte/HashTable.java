@@ -54,7 +54,6 @@ public class HashTable
                 cantidad++;
                 x.agregarDocumento(doc);
                 tabla[index] = x;
-                
                 found = true;
             } else if (tabla[index].equals(x))
             {
@@ -63,6 +62,7 @@ public class HashTable
                 if(!tabla[index].contains(doc))
                 {
                     tabla[index].agregarDocumento(doc);
+                    
                 }
                 found = true;
             } else

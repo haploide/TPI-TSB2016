@@ -1,5 +1,6 @@
 package soporte;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +47,8 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
     public void done()
     {   
         jlblResultado.setVisible(true);
-        jlblResultado.setText("Carga Finalizada");
+        jlblResultado.setText("Carga Finalizada!");
+       // jlblResultado.setForeground(Color.BLUE);
         
 
     }

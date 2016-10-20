@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import soporte.HashTable;
+import soporte.PalablaJDBC;
 
 public class Vocabulario
 {
@@ -18,6 +19,9 @@ public class Vocabulario
 
     }
 
+    public int getSizeHash(){
+        return ht.getCantidad();
+    }
     public void parserTexto(String str)
     {
         String delims = "[ \\p{Punct}¿¡0123456789ªº\\<\\>\\«\\»]+";
@@ -61,5 +65,24 @@ public class Vocabulario
             System.out.println("No existe el archivo de entrada..." + e.getMessage());
         }
 
+    }
+    
+    public boolean guardarEnBD()
+    {
+        Palabra tabla[]=ht.getTabla();
+        
+        for (Palabra palabra : tabla)
+        {
+            try
+            {
+                PalablaJDBC.Insert(palabra);
+                
+            } catch (Exception e)
+            {
+                
+            }
+        }
+        
+        return true;
     }
 }

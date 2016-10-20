@@ -126,6 +126,7 @@
                               <Component id="jBtnFiltrar" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jBtnCargarDocumentos" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLlbResultado" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jBtnGuardar" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="24" max="32767" attributes="0"/>
                       </Group>
@@ -150,7 +151,9 @@
                   <Component id="jPbrCargando" min="-2" pref="27" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLlbResultado" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="193" max="32767" attributes="0"/>
+                  <EmptySpace pref="155" max="32767" attributes="0"/>
+                  <Component id="jBtnGuardar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -183,14 +186,27 @@
           </Events>
         </Component>
         <Component class="javax.swing.JProgressBar" name="jPbrCargando">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPbrCargando.setVisible(false);"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jPbrCargando.setStringPainted(true);&#xa;jPbrCargando.setVisible(false);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLlbResultado">
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="jLlbResultado.setVisible(false);"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="jBtnGuardar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Guardar Vocabulario"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBtnGuardarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
