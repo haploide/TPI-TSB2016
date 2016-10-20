@@ -39,6 +39,7 @@ public class PalablaJDBC
             Connection connection = abrirConexion();
             String sql = "select id_palabra,  palabra, frecuencia from  Palabra ";
             PreparedStatement statement = connection.prepareStatement(sql);
+            
 
             ResultSet result = statement.executeQuery();
             while (result.next())
@@ -64,6 +65,44 @@ public class PalablaJDBC
         }
 
         return lista;
+    }
+    public static Palabra getByFilter(String palabra)
+    {
+     
+        Palabra  p = null;
+        LinkedList<String> doc = new LinkedList<>();
+        try
+        {
+
+            Connection connection = abrirConexion();
+            String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, palabra);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next())
+            {
+               
+                p = new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1)));
+               
+
+            }
+            result.close();
+            statement.close();
+            connection.close();
+
+        } catch (IOException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return p;
     }
 
     public static int Insert(Palabra p)
