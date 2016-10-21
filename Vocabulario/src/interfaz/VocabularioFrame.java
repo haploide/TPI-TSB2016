@@ -131,9 +131,17 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jTflFiltro.addKeyListener(new java.awt.event.KeyAdapter()
         {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
+                jTflFiltroKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jTflFiltroKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt)
             {
-                filtrado(evt);
+                jTflFiltroKeyTyped(evt);
             }
         });
 
@@ -305,14 +313,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
     {//GEN-HEADEREND:event_filtrado
-        if (Validaciones.esTexto(evt.getKeyChar()))
-        {
-
-        } else
-        {
-            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
-            evt.consume();
-        }
 
 
     }//GEN-LAST:event_filtrado
@@ -324,11 +324,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         if (!Validaciones.estaVacio(filtro))
         {
 
-            ArrayList<Palabra> byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
-
-            jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
-
-            jTblGrillaPalabras.updateUI();
+            filtrado(filtro);
 
         } else
         {
@@ -336,6 +332,15 @@ public class VocabularioFrame extends javax.swing.JFrame
             jTflFiltro.requestFocus();
         }
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
+
+    public void filtrado(String filtro)
+    {
+        ArrayList<Palabra> byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
+
+        jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
+
+        jTblGrillaPalabras.updateUI();
+    }
 
     private void jBtnCargarDocumentosActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosActionPerformed
     {//GEN-HEADEREND:event_jBtnCargarDocumentosActionPerformed
@@ -385,6 +390,32 @@ public class VocabularioFrame extends javax.swing.JFrame
         jTblGrillaPalabras.updateUI();
 
     }//GEN-LAST:event_jBtnLimpiarActionPerformed
+
+    private void jTflFiltroKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyPressed
+    {//GEN-HEADEREND:event_jTflFiltroKeyPressed
+        String filtro = jTflFiltro.getText();
+
+        filtrado(filtro);
+    }//GEN-LAST:event_jTflFiltroKeyPressed
+
+    private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
+    {//GEN-HEADEREND:event_jTflFiltroKeyTyped
+        if (Validaciones.esTexto(evt.getKeyChar()))
+        {
+
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTflFiltroKeyTyped
+
+    private void jTflFiltroKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyReleased
+    {//GEN-HEADEREND:event_jTflFiltroKeyReleased
+       String filtro = jTflFiltro.getText();
+
+        filtrado(filtro);
+    }//GEN-LAST:event_jTflFiltroKeyReleased
 
     /**
      * @param args the command line arguments
