@@ -70,6 +70,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnCargarDocumentos = new javax.swing.JButton();
         jBtnGuardar = new javax.swing.JButton();
         jBtnCargarVoc = new javax.swing.JButton();
+        jBtnLimpiar = new javax.swing.JButton();
         jPnlStatusBar = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jLlbResultado = new javax.swing.JLabel();
@@ -169,6 +170,16 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnCargarVoc.setIcon(new javax.swing.ImageIcon(".\\resource\\cargar24.png"));
         jBtnCargarVoc.setText("Cargar Vocabulario");
 
+        jBtnLimpiar.setIcon(new javax.swing.ImageIcon(".\\resource\\sinfiltro24.png"));
+        jBtnLimpiar.setText("Limpiar Filtro");
+        jBtnLimpiar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jBtnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
         jPnlOpciones.setLayout(jPnlOpcionesLayout);
         jPnlOpcionesLayout.setHorizontalGroup(
@@ -180,11 +191,15 @@ public class VocabularioFrame extends javax.swing.JFrame
                         .addComponent(jLblFiltro)
                         .addGap(18, 18, 18)
                         .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jBtnFiltrar)
-                    .addComponent(jBtnCargarDocumentos)
                     .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jBtnCargarVoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jBtnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPnlOpcionesLayout.createSequentialGroup()
+                            .addComponent(jBtnFiltrar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jBtnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jBtnCargarDocumentos, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPnlOpcionesLayout.setVerticalGroup(
@@ -195,7 +210,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                     .addComponent(jLblFiltro)
                     .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jBtnFiltrar)
+                .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBtnFiltrar)
+                    .addComponent(jBtnLimpiar))
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
@@ -308,12 +325,11 @@ public class VocabularioFrame extends javax.swing.JFrame
         {
 
             ArrayList<Palabra> byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
-            
-            
+
             jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
-            
+
             jTblGrillaPalabras.updateUI();
-            
+
         } else
         {
             JOptionPane.showMessageDialog(this, "Ingrese criterio de filtrado", "Error", JOptionPane.OK_OPTION, null);
@@ -343,6 +359,12 @@ public class VocabularioFrame extends javax.swing.JFrame
 
                 worker.execute();
 
+                jBtnGuardar.setEnabled(true);
+
+                jTblGrillaPalabras.setModel(new ModeloTabla());
+
+                jTblGrillaPalabras.updateUI();
+
                 break;
 
             case JFileChooser.CANCEL_OPTION:
@@ -354,6 +376,15 @@ public class VocabularioFrame extends javax.swing.JFrame
         //jTblGrillaPalabras.updateUI();
 
     }//GEN-LAST:event_jBtnCargarDocumentosActionPerformed
+
+    private void jBtnLimpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnLimpiarActionPerformed
+    {//GEN-HEADEREND:event_jBtnLimpiarActionPerformed
+        jTflFiltro.setText("");
+        jTblGrillaPalabras.setModel(new ModeloTabla());
+
+        jTblGrillaPalabras.updateUI();
+
+    }//GEN-LAST:event_jBtnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,6 +437,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JButton jBtnCargarVoc;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JButton jBtnGuardar;
+    private javax.swing.JButton jBtnLimpiar;
     private javax.swing.JLabel jLblFiltro;
     private javax.swing.JLabel jLlbCantidad;
     private javax.swing.JLabel jLlbResultado;
@@ -475,17 +507,16 @@ public class VocabularioFrame extends javax.swing.JFrame
         }
 
     }
-    
+
     class ModeloFiltrado extends AbstractTableModel
     {
+
         ArrayList<Palabra> filtrado;
 
         public ModeloFiltrado(ArrayList<Palabra> filtrado)
         {
             this.filtrado = filtrado;
         }
-        
-        
 
         @Override
         public int getRowCount()
@@ -520,9 +551,21 @@ public class VocabularioFrame extends javax.swing.JFrame
 
                 }
             }
+
             return "-------";
         }
-        
+
+        @Override
+        public String getColumnName(int column)
+        {
+            String nombres[] =
+            {
+                "Palabra", "Frecuencia", "Documentos"
+            };
+
+            return nombres[column];
+        }
+
     }
 
 }
