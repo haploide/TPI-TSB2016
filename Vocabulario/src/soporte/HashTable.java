@@ -75,6 +75,43 @@ public class HashTable
             }
         }
     }
+    public void putBD(Palabra x)
+    {
+
+        if (x == null)
+        {
+            return;
+        }
+
+        if (averageLength() >= 0.8)
+        {
+            rehash();
+        }
+
+        int index = hash(x.hashCode());
+
+        boolean found = false;
+        while (!found)
+        {
+            if (tabla[index] == null)
+            {
+                cantidad++;
+                tabla[index] = x;
+                found = true;
+            } else if (tabla[index].equals(x))
+            {
+                tabla[index].incrementarFrecuencia();
+                found = true;
+            } else
+            {
+                index++;
+            }
+            if (index == tabla.length)
+            {
+                index = 0;
+            }
+        }
+    }
 
     protected void rehash()
     {

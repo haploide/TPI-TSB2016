@@ -11,9 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,12 +57,12 @@ public class DocumentoJDBC
 //            Connection connection = abrirConexion();
             String sql = "select d.documento from  Documento d join DocumentoXPalabra dp on d.id_documento = dp.id_documento where dp.id_palabra = ? ";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(2, idP);
+            statement.setInt(1, idP);
 
             ResultSet result = statement.executeQuery();
             while (result.next())
             {
-                d.add("d.documento");
+                d.add(result.getString(1));
             }
             result.close();
             statement.close();

@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +14,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import negocio.Palabra;
 import negocio.Vocabulario;
+import soporte.Persistencia;
 import soporte.WorkerGuardar;
 import soporte.WorkerHashing;
 
@@ -75,6 +77,13 @@ public class VocabularioFrame extends javax.swing.JFrame
         setTitle("Vocabulario");
         setIconImage(obtenerImagen()
         );
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowOpened(java.awt.event.WindowEvent evt)
+            {
+                cargarBD(evt);
+            }
+        });
 
         jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
 
@@ -243,10 +252,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         {
             case JFileChooser.APPROVE_OPTION:
 
-                for (File tarea : fc.getSelectedFiles())
-                {
-                    colaTareas.add(tarea);
-                }
+                colaTareas.addAll(Arrays.asList(fc.getSelectedFiles()));
                 break;
 
             case JFileChooser.CANCEL_OPTION:
@@ -284,6 +290,13 @@ public class VocabularioFrame extends javax.swing.JFrame
         
 
     }//GEN-LAST:event_jBtnGuardarActionPerformed
+
+    private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
+    {//GEN-HEADEREND:event_cargarBD
+       voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
+       jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
+      jTblGrillaPalabras.updateUI();
+    }//GEN-LAST:event_cargarBD
 
     /**
      * @param args the command line arguments
@@ -399,7 +412,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         {
             String nombres[] =
             {
-                "Palabra", "Frecuencia", "Cant Documentos"
+                "Palabra", "Frecuencia", "Documentos"
             };
 
             return nombres[column];

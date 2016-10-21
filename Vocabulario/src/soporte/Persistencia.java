@@ -1,5 +1,6 @@
 package soporte;
 
+import java.util.ArrayList;
 import negocio.Palabra;
 
 
@@ -17,6 +18,11 @@ public class Persistencia
             {
                 
             }
+    }
+    
+    public static ArrayList<Palabra> getAllPalabras()
+    {
+     return PalablaJDBC.getAll();
     }
     
 }
