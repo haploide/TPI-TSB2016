@@ -180,6 +180,7 @@ public class PalablaJDBC
             preparedStmt.setString(2, p.getPalabra());
             preparedStmt.setInt(1, p.getFrecuencia());
             preparedStmt.executeUpdate();
+            preparedStmt.close();
 
 //            connection.commit();
             for (String pal : p.getDocumentos())
@@ -192,11 +193,15 @@ public class PalablaJDBC
                 }
                 else
                 {
-                   PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection); 
+                    
+                    if (!PalabraXDocumentoJDBC.existeRelacion(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection))
+                    {
+                        PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection);                        
+                    }
                 }
             }
             
-            preparedStmt.close();
+            
 //            connection.close();
         } catch (SQLException ex)
         {

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,43 @@ public class PalabraXDocumentoJDBC
         }
         
 
+    }
+    public static boolean existeRelacion(int p, int d, Connection connection)
+    {
+       
+         try
+        {
+
+//            Connection connection = abrirConexion();
+            String sql = "SELECT * FROM documentoXpalabra WHERE id_palabra = ? and id_documento = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, p);
+            statement.setInt(2, d);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next())
+            {
+                return true;
+
+            }
+            result.close();
+            statement.close();
+//            connection.close();
+
+        } //        catch (IOException ex)
+        //        {
+        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+        //        catch (ClassNotFoundException ex)
+        //        {
+        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+        
     }
     private static Connection abrirConexion() throws IOException, ClassNotFoundException, SQLException
     {
