@@ -190,7 +190,12 @@ public class PalablaJDBC
                     PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.Insert(pal, connection), connection);
 
                 }
+                else
+                {
+                   PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection); 
+                }
             }
+            
             preparedStmt.close();
 //            connection.close();
         } catch (SQLException ex)
