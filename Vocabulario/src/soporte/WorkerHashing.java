@@ -36,9 +36,9 @@ public class WorkerHashing extends SwingWorker<Boolean, Integer>
     {
         int aux=incremento;
         
-        for (File tarea : colaTareas)
+        while(!colaTareas.isEmpty())
         {
-            voc.leerArchivo(tarea);
+            voc.leerArchivo(colaTareas.poll());
 
             publish(aux);
 
