@@ -45,7 +45,7 @@ public class PalablaJDBC
             while (result.next())
             {
                
-                p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1)));
+                p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1),connection));
                 lista.add(p);
 
             }
@@ -84,7 +84,7 @@ public class PalablaJDBC
             while (result.next())
             {
                
-              p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1)));
+              p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1),connection));
                 lista.add(p);
             }
             result.close();
