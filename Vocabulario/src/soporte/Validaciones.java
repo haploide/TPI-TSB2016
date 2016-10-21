@@ -12,5 +12,9 @@ public class Validaciones
     {
         return Pattern.matches("[a-zA-Z]", st+"");
     }
+    public static boolean estaVacio(String st)
+    {
+        return st.length()==0;
+    }
     
 }

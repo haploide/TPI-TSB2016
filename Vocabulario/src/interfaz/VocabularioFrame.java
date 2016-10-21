@@ -147,11 +147,11 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jBtnCargarDocumentos.setIcon(new javax.swing.ImageIcon(".\\resource\\agregar24.png"));
         jBtnCargarDocumentos.setText("Cargar mas Documentos");
-        jBtnCargarDocumentos.addMouseListener(new java.awt.event.MouseAdapter()
+        jBtnCargarDocumentos.addActionListener(new java.awt.event.ActionListener()
         {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
+            public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jBtnCargarDocumentosMouseClicked(evt);
+                jBtnCargarDocumentosActionPerformed(evt);
             }
         });
 
@@ -261,8 +261,60 @@ public class VocabularioFrame extends javax.swing.JFrame
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBtnCargarDocumentosMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosMouseClicked
-    {//GEN-HEADEREND:event_jBtnCargarDocumentosMouseClicked
+    private void jBtnGuardarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnGuardarActionPerformed
+    {//GEN-HEADEREND:event_jBtnGuardarActionPerformed
+
+        int result = JOptionPane.showConfirmDialog(this, "Esta acción tomara tiempo\n¿Está seguro de continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (result == JOptionPane.YES_OPTION)
+        {
+            jBtnGuardar.setEnabled(false);
+
+            WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
+
+            worker.execute();
+        }
+
+
+    }//GEN-LAST:event_jBtnGuardarActionPerformed
+
+    private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
+    {//GEN-HEADEREND:event_cargarBD
+        voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
+        jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
+        jTblGrillaPalabras.updateUI();
+    }//GEN-LAST:event_cargarBD
+
+    private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
+    {//GEN-HEADEREND:event_filtrado
+        if (Validaciones.esTexto(evt.getKeyChar()))
+        {
+
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
+            evt.consume();
+        }
+
+
+    }//GEN-LAST:event_filtrado
+
+    private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnFiltrarActionPerformed
+    {//GEN-HEADEREND:event_jBtnFiltrarActionPerformed
+        String filtro = jTflFiltro.getText();
+
+        if (!Validaciones.estaVacio(filtro))
+        {
+
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Ingrese criterio de filtrado", "Error", JOptionPane.OK_OPTION, null);
+            jTflFiltro.requestFocus();
+        }
+    }//GEN-LAST:event_jBtnFiltrarActionPerformed
+
+    private void jBtnCargarDocumentosActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosActionPerformed
+    {//GEN-HEADEREND:event_jBtnCargarDocumentosActionPerformed
         JFileChooser fc = new JFileChooser("../");
         fc.setMultiSelectionEnabled(true);
 
@@ -276,6 +328,13 @@ public class VocabularioFrame extends javax.swing.JFrame
             case JFileChooser.APPROVE_OPTION:
 
                 colaTareas.addAll(Arrays.asList(fc.getSelectedFiles()));
+
+                jPbrCargando.setVisible(true);
+
+                WorkerHashing worker = new WorkerHashing(jLlbResultado, jLlbCantidad, jPbrCargando, jTblGrillaPalabras, colaTareas.size(), voc, colaTareas);
+
+                worker.execute();
+
                 break;
 
             case JFileChooser.CANCEL_OPTION:
@@ -284,65 +343,9 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         }
 
-        jPbrCargando.setVisible(true);
-
-        WorkerHashing worker = new WorkerHashing(jLlbResultado, jLlbCantidad, jPbrCargando, jTblGrillaPalabras, colaTareas.size(), voc, colaTareas);
-
-        worker.execute();
-        
         //jTblGrillaPalabras.updateUI();
-        
-        
 
-    }//GEN-LAST:event_jBtnCargarDocumentosMouseClicked
-
-    private void jBtnGuardarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnGuardarActionPerformed
-    {//GEN-HEADEREND:event_jBtnGuardarActionPerformed
-        
-      int result= JOptionPane.showConfirmDialog(this,"Esta acción tomara tiempo\n¿Está seguro de continuar?","Confirmar",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-       
-        if (result==JOptionPane.YES_OPTION)
-        {
-            jBtnGuardar.setEnabled(false);
-            
-            WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
-            
-            worker.execute();
-        }
-   
-        
-
-    }//GEN-LAST:event_jBtnGuardarActionPerformed
-
-    private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
-    {//GEN-HEADEREND:event_cargarBD
-       voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
-       jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
-      jTblGrillaPalabras.updateUI();
-    }//GEN-LAST:event_cargarBD
-
-    private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
-    {//GEN-HEADEREND:event_filtrado
-        if(Validaciones.esTexto(evt.getKeyChar())){
-            
-        }
-        else{
-            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION,null);
-            evt.consume();
-        }
-        
-        
-    }//GEN-LAST:event_filtrado
-
-    private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnFiltrarActionPerformed
-    {//GEN-HEADEREND:event_jBtnFiltrarActionPerformed
-       
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_jBtnFiltrarActionPerformed
+    }//GEN-LAST:event_jBtnCargarDocumentosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -429,28 +432,27 @@ public class VocabularioFrame extends javax.swing.JFrame
         {
             Palabra tabla[] = voc.getTabla();
 
-            if (tabla[rowIndex]!=null)
+            if (tabla[rowIndex] != null)
             {
                 switch (columnIndex)
                 {
                     case 0:
-                        
+
                         return tabla[rowIndex].getPalabra();
-                    
+
                     case 1:
-                        
+
                         return tabla[rowIndex].getFrecuencia();
-                    
+
                     case 2:
-                        
+
                         return tabla[rowIndex].getDocumentos().toString();
-                    
+
                 }
             }
-            
+
             return "-------";
 
-            
         }
 
         @Override
