@@ -76,9 +76,9 @@ public class PalablaJDBC
         {
 
             Connection connection = abrirConexion();
-            String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra like ?% ";
+            String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra like ? ";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, palabra);
+            statement.setString(1, palabra+"%");
 
             ResultSet result = statement.executeQuery();
             while (result.next())

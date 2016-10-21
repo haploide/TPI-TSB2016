@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -306,6 +307,13 @@ public class VocabularioFrame extends javax.swing.JFrame
         if (!Validaciones.estaVacio(filtro))
         {
 
+            ArrayList<Palabra> byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
+            
+            
+            jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
+            
+            jTblGrillaPalabras.updateUI();
+            
         } else
         {
             JOptionPane.showMessageDialog(this, "Ingrese criterio de filtrado", "Error", JOptionPane.OK_OPTION, null);
@@ -466,6 +474,55 @@ public class VocabularioFrame extends javax.swing.JFrame
             return nombres[column];
         }
 
+    }
+    
+    class ModeloFiltrado extends AbstractTableModel
+    {
+        ArrayList<Palabra> filtrado;
+
+        public ModeloFiltrado(ArrayList<Palabra> filtrado)
+        {
+            this.filtrado = filtrado;
+        }
+        
+        
+
+        @Override
+        public int getRowCount()
+        {
+            return filtrado.size();
+        }
+
+        @Override
+        public int getColumnCount()
+        {
+            return 3;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            if (filtrado.get(rowIndex) != null)
+            {
+                switch (columnIndex)
+                {
+                    case 0:
+
+                        return filtrado.get(rowIndex).getPalabra();
+
+                    case 1:
+
+                        return filtrado.get(rowIndex).getFrecuencia();
+
+                    case 2:
+
+                        return filtrado.get(rowIndex).getDocumentos().toString();
+
+                }
+            }
+            return "-------";
+        }
+        
     }
 
 }
