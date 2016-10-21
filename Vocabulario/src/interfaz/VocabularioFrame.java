@@ -17,6 +17,7 @@ import negocio.Palabra;
 import negocio.Vocabulario;
 import soporte.Persistencia;
 import soporte.Validaciones;
+import soporte.WorkerCargar;
 import soporte.WorkerGuardar;
 import soporte.WorkerHashing;
 
@@ -70,6 +71,7 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnCargarDocumentos = new javax.swing.JButton();
         jBtnGuardar = new javax.swing.JButton();
         jBtnLimpiar = new javax.swing.JButton();
+        jlblGif = new javax.swing.JLabel();
         jPnlStatusBar = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         jLlbResultado = new javax.swing.JLabel();
@@ -184,24 +186,32 @@ public class VocabularioFrame extends javax.swing.JFrame
             }
         });
 
+        jlblGif.setIcon(new javax.swing.ImageIcon(".\\resource\\loading.gif"));
+        jlblGif.setVisible(false);
+
         javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
         jPnlOpciones.setLayout(jPnlOpcionesLayout);
         jPnlOpcionesLayout.setHorizontalGroup(
             jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPnlOpcionesLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPnlOpcionesLayout.createSequentialGroup()
-                        .addComponent(jLblFiltro)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jBtnGuardar)
-                    .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPnlOpcionesLayout.createSequentialGroup()
-                            .addComponent(jBtnFiltrar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jBtnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jBtnCargarDocumentos, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addContainerGap()
+                        .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                                .addComponent(jLblFiltro)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPnlOpcionesLayout.createSequentialGroup()
+                                    .addComponent(jBtnFiltrar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jBtnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jBtnCargarDocumentos, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(jBtnGuardar)))
+                    .addGroup(jPnlOpcionesLayout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jlblGif)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPnlOpcionesLayout.setVerticalGroup(
@@ -217,7 +227,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                     .addComponent(jBtnLimpiar))
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
+                .addGap(114, 114, 114)
+                .addComponent(jlblGif)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(jBtnGuardar)
                 .addContainerGap())
         );
@@ -228,8 +240,6 @@ public class VocabularioFrame extends javax.swing.JFrame
         jSeparator1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
         jLlbResultado.setText("Listo");
-
-        jPbrCargando.setBorder(null);
 
         javax.swing.GroupLayout jPnlStatusBarLayout = new javax.swing.GroupLayout(jPnlStatusBar);
         jPnlStatusBar.setLayout(jPnlStatusBarLayout);
@@ -298,7 +308,8 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
     {//GEN-HEADEREND:event_cargarBD
-        voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
+        WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
+        worker.execute();
         jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
         jTblGrillaPalabras.updateUI();
     }//GEN-LAST:event_cargarBD
@@ -471,6 +482,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTblGrillaPalabras;
     private javax.swing.JTextField jTflFiltro;
+    private javax.swing.JLabel jlblGif;
     // End of variables declaration//GEN-END:variables
 
     class ModeloTabla extends AbstractTableModel
