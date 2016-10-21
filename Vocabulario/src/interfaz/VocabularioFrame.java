@@ -69,7 +69,6 @@ public class VocabularioFrame extends javax.swing.JFrame
         jBtnFiltrar = new javax.swing.JButton();
         jBtnCargarDocumentos = new javax.swing.JButton();
         jBtnGuardar = new javax.swing.JButton();
-        jBtnCargarVoc = new javax.swing.JButton();
         jBtnLimpiar = new javax.swing.JButton();
         jPnlStatusBar = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -175,9 +174,6 @@ public class VocabularioFrame extends javax.swing.JFrame
             }
         });
 
-        jBtnCargarVoc.setIcon(new javax.swing.ImageIcon(".\\resource\\cargar24.png"));
-        jBtnCargarVoc.setText("Cargar Vocabulario");
-
         jBtnLimpiar.setIcon(new javax.swing.ImageIcon(".\\resource\\sinfiltro24.png"));
         jBtnLimpiar.setText("Limpiar Filtro");
         jBtnLimpiar.addActionListener(new java.awt.event.ActionListener()
@@ -199,9 +195,7 @@ public class VocabularioFrame extends javax.swing.JFrame
                         .addComponent(jLblFiltro)
                         .addGap(18, 18, 18)
                         .addComponent(jTflFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jBtnCargarVoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jBtnGuardar)
                     .addGroup(jPnlOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPnlOpcionesLayout.createSequentialGroup()
                             .addComponent(jBtnFiltrar)
@@ -223,9 +217,7 @@ public class VocabularioFrame extends javax.swing.JFrame
                     .addComponent(jBtnLimpiar))
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
-                .addComponent(jBtnCargarVoc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
                 .addComponent(jBtnGuardar)
                 .addContainerGap())
         );
@@ -465,7 +457,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCargarDocumentos;
-    private javax.swing.JButton jBtnCargarVoc;
     private javax.swing.JButton jBtnFiltrar;
     private javax.swing.JButton jBtnGuardar;
     private javax.swing.JButton jBtnLimpiar;
