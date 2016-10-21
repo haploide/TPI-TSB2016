@@ -15,6 +15,7 @@ import javax.swing.table.AbstractTableModel;
 import negocio.Palabra;
 import negocio.Vocabulario;
 import soporte.Persistencia;
+import soporte.Validaciones;
 import soporte.WorkerGuardar;
 import soporte.WorkerHashing;
 
@@ -84,6 +85,13 @@ public class VocabularioFrame extends javax.swing.JFrame
                 cargarBD(evt);
             }
         });
+        addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                filtrado(evt);
+            }
+        });
 
         jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
 
@@ -119,8 +127,23 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jLblFiltro.setText("Filtro");
 
+        jTflFiltro.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                filtrado(evt);
+            }
+        });
+
         jBtnFiltrar.setIcon(new javax.swing.ImageIcon(".\\resource\\embudo24.png"));
         jBtnFiltrar.setText("Filtar");
+        jBtnFiltrar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jBtnFiltrarActionPerformed(evt);
+            }
+        });
 
         jBtnCargarDocumentos.setIcon(new javax.swing.ImageIcon(".\\resource\\agregar24.png"));
         jBtnCargarDocumentos.setText("Cargar mas Documentos");
@@ -297,6 +320,29 @@ public class VocabularioFrame extends javax.swing.JFrame
        jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
       jTblGrillaPalabras.updateUI();
     }//GEN-LAST:event_cargarBD
+
+    private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
+    {//GEN-HEADEREND:event_filtrado
+        if(Validaciones.esTexto(evt.getKeyChar())){
+            
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION,null);
+            evt.consume();
+        }
+        
+        
+    }//GEN-LAST:event_filtrado
+
+    private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnFiltrarActionPerformed
+    {//GEN-HEADEREND:event_jBtnFiltrarActionPerformed
+       
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     /**
      * @param args the command line arguments
