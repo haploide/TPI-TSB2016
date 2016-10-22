@@ -186,8 +186,7 @@ public class VocabularioFrame extends javax.swing.JFrame
             }
         });
 
-        jlblGif.setIcon(new javax.swing.ImageIcon(".\\resource\\loading.gif"));
-        jlblGif.setVisible(false);
+        jlblGif.setIcon(new javax.swing.ImageIcon(new javax.swing.ImageIcon(".\\resource\\loading.gif").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT)));
 
         javax.swing.GroupLayout jPnlOpcionesLayout = new javax.swing.GroupLayout(jPnlOpciones);
         jPnlOpciones.setLayout(jPnlOpcionesLayout);
@@ -210,8 +209,8 @@ public class VocabularioFrame extends javax.swing.JFrame
                                 .addComponent(jBtnCargarDocumentos, javax.swing.GroupLayout.Alignment.LEADING))
                             .addComponent(jBtnGuardar)))
                     .addGroup(jPnlOpcionesLayout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jlblGif)))
+                        .addGap(25, 25, 25)
+                        .addComponent(jlblGif, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPnlOpcionesLayout.setVerticalGroup(
@@ -227,9 +226,9 @@ public class VocabularioFrame extends javax.swing.JFrame
                     .addComponent(jBtnLimpiar))
                 .addGap(28, 28, 28)
                 .addComponent(jBtnCargarDocumentos)
-                .addGap(114, 114, 114)
-                .addComponent(jlblGif)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
+                .addComponent(jlblGif, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jBtnGuardar)
                 .addContainerGap())
         );
