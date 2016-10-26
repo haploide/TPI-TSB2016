@@ -199,11 +199,18 @@ public class HashTable
         Palabra actual[]=new Palabra[cantidad];
         
         int j=0;
-        for(int i=0;i<tabla.length;i++){
-            if(tabla[i]!=null){
-                actual[j]=tabla[i];
-                j++;
+        try
+        {
+            for (int i = 0; i < tabla.length; i++)
+            {
+                if (tabla[i] != null)
+                {
+                    actual[j] = tabla[i];
+                    j++;
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException e)
+        {
         }
         return actual;
     }
