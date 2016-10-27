@@ -132,10 +132,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jTflFiltro.addKeyListener(new java.awt.event.KeyAdapter()
         {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
-                jTflFiltroKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt)
             {
                 jTflFiltroKeyReleased(evt);
@@ -320,8 +316,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_cargarBD
         WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
         worker.execute();
-        jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
-        jTblGrillaPalabras.updateUI();
+        
     }//GEN-LAST:event_cargarBD
 
     private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
@@ -381,7 +376,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
                 jTblGrillaPalabras.setModel(new ModeloTabla());
 
-                jTblGrillaPalabras.updateUI();
+                
 
                 break;
 
@@ -399,17 +394,9 @@ public class VocabularioFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jBtnLimpiarActionPerformed
         jTflFiltro.setText("");
         jTblGrillaPalabras.setModel(new ModeloTabla());
-
         jTblGrillaPalabras.updateUI();
 
     }//GEN-LAST:event_jBtnLimpiarActionPerformed
-
-    private void jTflFiltroKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyPressed
-    {//GEN-HEADEREND:event_jTflFiltroKeyPressed
-        String filtro = jTflFiltro.getText();
-
-        filtrado(filtro);
-    }//GEN-LAST:event_jTflFiltroKeyPressed
 
     private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
     {//GEN-HEADEREND:event_jTflFiltroKeyTyped

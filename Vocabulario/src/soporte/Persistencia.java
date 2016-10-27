@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import negocio.Palabra;
 
 public class Persistencia
@@ -19,6 +21,7 @@ public class Persistencia
 
         } catch (Exception e)
         {
+            Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, e);
 
         }
     }

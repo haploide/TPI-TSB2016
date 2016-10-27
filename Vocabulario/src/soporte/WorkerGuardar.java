@@ -1,8 +1,12 @@
 
 package soporte;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
@@ -31,28 +35,35 @@ public class WorkerGuardar extends SwingWorker<Boolean, Double>
     @Override
     protected Boolean doInBackground() throws Exception
     {
-        Double aux=incremento;
-        Palabra tabla[]=voc.getTabla();
-        
-        Connection connection=persistencia.abrirConexion();
-        
-        for (Palabra pal : tabla)
+        try
         {
-            persistencia.guardarEnBD(pal, connection);
-            publish(aux);
-            aux += incremento;
+            Double aux = incremento;
+            Palabra tabla[] = voc.getTabla();
+            
+            Connection connection = persistencia.abrirConexion();
+            
+            for (Palabra pal : tabla)
+            {
+                persistencia.guardarEnBD(pal, connection);
+                publish(aux);
+                aux += incremento;
+            }
+            
+            connection.commit();
+            connection.close();
+            
+            
+        } catch (IOException | ClassNotFoundException | SQLException iOException)
+        {
+            Logger.getLogger(WorkerGuardar.class.getName()).log(Level.SEVERE, null, iOException);
         }
-        
-        connection.commit();
-        connection.close();
-        
         return true;
     }
     @Override
     public void done()
     {
         jlblResultado.setVisible(true);
-        jPbrProgreso.setString("100.0%");
+        jPbrProgreso.setString("100.00%");
         jPbrProgreso.setValue(100);        
         jlblResultado.setText("Guardado Finalizando!");
         
