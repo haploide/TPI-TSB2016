@@ -291,15 +291,26 @@ public class VocabularioFrame extends javax.swing.JFrame
     private void jBtnGuardarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnGuardarActionPerformed
     {//GEN-HEADEREND:event_jBtnGuardarActionPerformed
 
-        int result = JOptionPane.showConfirmDialog(this, "Esta acción tomara tiempo\n¿Está seguro de continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, "Esta por guardar el vocabulario\n¿Está seguro de continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION)
         {
-            jBtnGuardar.setEnabled(false);
-
-            WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
-
-            worker.execute();
+            if (voc.getSizeHash()>0)
+            {
+                jBtnGuardar.setEnabled(false);
+                
+                jPbrCargando.setVisible(true);
+                
+                WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
+                
+                worker.execute();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "El vocabulario esta vacío", "Atención", JOptionPane.INFORMATION_MESSAGE);
+                
+            }
+                
         }
 
 

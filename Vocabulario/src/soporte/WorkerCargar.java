@@ -33,6 +33,7 @@ public class WorkerCargar extends SwingWorker<Boolean, Double>
     protected Boolean doInBackground() throws Exception
     {
         jlblGif.setVisible(true);
+        jlblResultado.setText("Cargando Vocabulario...");
         voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
 
         return true;
