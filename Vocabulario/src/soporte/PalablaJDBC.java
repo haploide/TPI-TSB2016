@@ -105,7 +105,7 @@ public class PalablaJDBC
         return lista;
     }
 
-    public static int Insert(Palabra p)
+    public static int Insert(Palabra p, Connection connection)
     {
         ArrayList<Integer> idDoc = new ArrayList<>();
 
@@ -113,7 +113,7 @@ public class PalablaJDBC
 
         try
         {
-            Connection connection = abrirConexion();
+//            Connection connection = abrirConexion();
             if (getIdPalabra(p.getPalabra(), connection) == 0)
             {
                 for (String pal : p.getDocumentos())
@@ -150,15 +150,9 @@ public class PalablaJDBC
                 upDate(p, connection);
 
             }
-            connection.commit();
-            connection.close();
+//            connection.commit();
+//            connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);

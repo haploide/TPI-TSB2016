@@ -1,6 +1,7 @@
 
 package soporte;
 
+import java.sql.Connection;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -33,17 +34,20 @@ public class WorkerGuardar extends SwingWorker<Boolean, Double>
         Double aux=incremento;
         Palabra tabla[]=voc.getTabla();
         
+        Connection connection=persistencia.abrirConexion();
         
         for(int i=0;i<tabla.length;i++){
             
             
-            persistencia.guardarEnBD(tabla[i]);
+            persistencia.guardarEnBD(tabla[i],connection);
             
             publish(aux);
 
             aux += incremento;
         }
         
+        connection.commit();
+        connection.close();
         
         return true;
     }
