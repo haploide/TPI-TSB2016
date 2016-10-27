@@ -36,13 +36,10 @@ public class WorkerGuardar extends SwingWorker<Boolean, Double>
         
         Connection connection=persistencia.abrirConexion();
         
-        for(int i=0;i<tabla.length;i++){
-            
-            
-            persistencia.guardarEnBD(tabla[i],connection);
-            
+        for (Palabra pal : tabla)
+        {
+            persistencia.guardarEnBD(pal, connection);
             publish(aux);
-
             aux += incremento;
         }
         
@@ -55,6 +52,8 @@ public class WorkerGuardar extends SwingWorker<Boolean, Double>
     public void done()
     {
         jlblResultado.setVisible(true);
+        jPbrProgreso.setString("100.0%");
+        jPbrProgreso.setValue(100);        
         jlblResultado.setText("Guardado Finalizando!");
         
     }
