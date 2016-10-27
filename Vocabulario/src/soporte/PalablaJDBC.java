@@ -11,7 +11,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -36,9 +35,9 @@ public class PalablaJDBC
         try
         {
             String sql = "select id_palabra,  palabra, frecuencia from  Palabra ";
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
             
-            ResultSet result = statement.executeQuery(sql);
+            ResultSet result = statement.executeQuery();
             
             while (result.next())
             {
