@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -28,37 +29,27 @@ public class PalablaJDBC
     {
     }
 
-    public static ArrayList<Palabra> getAll()
+    public static LinkedList<Palabra> getAll(Connection connection)
     {
         Palabra p;
-        ArrayList<Palabra> lista = new ArrayList<>();
-        LinkedList<String> doc = new LinkedList<>();
+        LinkedList<Palabra> lista = new LinkedList<>();
         try
         {
-
-            Connection connection = abrirConexion();
             String sql = "select id_palabra,  palabra, frecuencia from  Palabra ";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            Statement statement = connection.createStatement();
             
-
-            ResultSet result = statement.executeQuery();
+            ResultSet result = statement.executeQuery(sql);
+            
             while (result.next())
             {
-               
                 p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1),connection));
                 lista.add(p);
 
             }
             result.close();
             statement.close();
-            connection.close();
+            
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,7 +62,7 @@ public class PalablaJDBC
      
          Palabra p;
         ArrayList<Palabra> lista = new ArrayList<>();
-        LinkedList<String> doc = new LinkedList<>();
+       
         try
         {
 
@@ -91,13 +82,7 @@ public class PalablaJDBC
             statement.close();
             connection.close();
 
-        } catch (IOException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex)
+        } catch (IOException | ClassNotFoundException | SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.Palabra;
@@ -26,9 +27,9 @@ public class Persistencia
         }
     }
 
-    public static ArrayList<Palabra> getAllPalabras()
+    public static LinkedList<Palabra> getAllPalabras(Connection connection)
     {
-        return PalablaJDBC.getAll();
+        return PalablaJDBC.getAll(connection);
     }
 
     public static ArrayList<Palabra> getByFilterPalabras(String palabra)

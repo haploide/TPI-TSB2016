@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,13 +49,11 @@ public class DocumentoJDBC
 
     }
 
-    public static LinkedList<String> getDocumentos(int idP,Connection connection)
+    public static LinkedList<String> getDocumentos(int idP, Connection connection)
     {
         LinkedList<String> d = new LinkedList<>();
         try
         {
-
-//            Connection connection = abrirConexion();
             String sql = "select d.documento from  Documento d join DocumentoXPalabra dp on d.id_documento = dp.id_documento where dp.id_palabra = ? ";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, idP);
@@ -66,18 +65,8 @@ public class DocumentoJDBC
             }
             result.close();
             statement.close();
-//            connection.close();
 
-        } 
-//        catch (IOException ex)
-//        {
-//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        catch (ClassNotFoundException ex)
-//        {
-//            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        catch (SQLException ex)
+        } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }

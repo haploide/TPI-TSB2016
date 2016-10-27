@@ -1,5 +1,10 @@
 package soporte;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
@@ -17,6 +22,7 @@ public class WorkerCargar extends SwingWorker<Boolean, Double>
     private final Vocabulario voc;
     private final JLabel jLlbCantidad;
     private final JTable jTblGrillaPalabras;
+    private final Persistencia persistencia;
 
     public WorkerCargar(JLabel jlblGif, JLabel jlblResultado, Vocabulario voc, JLabel jLlbCantidad, JTable jTblGrillaPalabras)
     {
@@ -25,6 +31,7 @@ public class WorkerCargar extends SwingWorker<Boolean, Double>
         this.voc = voc;
         this.jLlbCantidad = jLlbCantidad;
         this.jTblGrillaPalabras = jTblGrillaPalabras;
+        persistencia= new Persistencia();
     }
 
    
@@ -34,7 +41,19 @@ public class WorkerCargar extends SwingWorker<Boolean, Double>
     {
         jlblGif.setVisible(true);
         jlblResultado.setText("Cargando Vocabulario...");
-        voc.cargarHashDesdeBD(Persistencia.getAllPalabras());
+        
+        try
+        {
+            Connection connection = persistencia.abrirConexion();
+            
+            voc.cargarHashDesdeBD(Persistencia.getAllPalabras(connection));
+            
+            connection.close();
+            
+        } catch (IOException | ClassNotFoundException | SQLException iOException)
+        {
+            Logger.getLogger(WorkerCargar.class.getName()).log(Level.SEVERE, null, iOException);
+        }
 
         return true;
     }
