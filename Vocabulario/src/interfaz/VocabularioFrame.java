@@ -136,10 +136,6 @@ public class VocabularioFrame extends javax.swing.JFrame
             {
                 jTflFiltroKeyReleased(evt);
             }
-            public void keyTyped(java.awt.event.KeyEvent evt)
-            {
-                jTflFiltroKeyTyped(evt);
-            }
         });
 
         jBtnFiltrar.setIcon(new javax.swing.ImageIcon(".\\resource\\embudo24.png"));
@@ -291,22 +287,21 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         if (result == JOptionPane.YES_OPTION)
         {
-            if (voc.getSizeHash()>0)
+            if (voc.getSizeHash() > 0)
             {
                 jBtnGuardar.setEnabled(false);
-                
+
                 jPbrCargando.setVisible(true);
-                
+
                 WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
-                
+
                 worker.execute();
-            }
-            else
+            } else
             {
                 JOptionPane.showMessageDialog(this, "El vocabulario esta vacío", "Atención", JOptionPane.INFORMATION_MESSAGE);
-                
+
             }
-                
+
         }
 
 
@@ -316,7 +311,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_cargarBD
         WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
         worker.execute();
-        
+
     }//GEN-LAST:event_cargarBD
 
     private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
@@ -376,8 +371,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
                 jTblGrillaPalabras.setModel(new ModeloTabla());
 
-                
-
                 break;
 
             case JFileChooser.CANCEL_OPTION:
@@ -398,23 +391,25 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     }//GEN-LAST:event_jBtnLimpiarActionPerformed
 
-    private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
-    {//GEN-HEADEREND:event_jTflFiltroKeyTyped
+    private void jTflFiltroKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyReleased
+    {//GEN-HEADEREND:event_jTflFiltroKeyReleased
         if (Validaciones.esTexto(evt.getKeyChar()))
         {
+            String filtro = jTflFiltro.getText();
+            if (filtro.length() > 0)
+            {
+                filtrado(filtro);
+            } else
+            {
+                jTblGrillaPalabras.setModel(new ModeloTabla());
+                jTblGrillaPalabras.updateUI();
+            }
 
         } else
         {
             JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
             evt.consume();
         }
-    }//GEN-LAST:event_jTflFiltroKeyTyped
-
-    private void jTflFiltroKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyReleased
-    {//GEN-HEADEREND:event_jTflFiltroKeyReleased
-       String filtro = jTflFiltro.getText();
-
-        filtrado(filtro);
     }//GEN-LAST:event_jTflFiltroKeyReleased
 
     /**
