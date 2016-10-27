@@ -26,6 +26,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private Vocabulario voc;
     private LinkedList<File> colaTareas;
+    private ArrayList<Palabra> byFilterPalabras;
 
     /**
      * Creates new form Vocabulario
@@ -296,6 +297,7 @@ public class VocabularioFrame extends javax.swing.JFrame
                 WorkerGuardar worker = new WorkerGuardar(jLlbResultado, jPbrCargando, voc);
 
                 worker.execute();
+
             } else
             {
                 JOptionPane.showMessageDialog(this, "El vocabulario esta vacío", "Atención", JOptionPane.INFORMATION_MESSAGE);
@@ -311,6 +313,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_cargarBD
         WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
         worker.execute();
+
 
     }//GEN-LAST:event_cargarBD
 
@@ -334,11 +337,12 @@ public class VocabularioFrame extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, "Ingrese criterio de filtrado", "Error", JOptionPane.OK_OPTION, null);
             jTflFiltro.requestFocus();
         }
+
     }//GEN-LAST:event_jBtnFiltrarActionPerformed
 
     public void filtrado(String filtro)
     {
-        ArrayList<Palabra> byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
+        byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
 
         jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
 
@@ -395,14 +399,17 @@ public class VocabularioFrame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jTflFiltroKeyReleased
         if (Validaciones.esTexto(evt.getKeyChar()))
         {
+
             String filtro = jTflFiltro.getText();
             if (filtro.length() > 0)
             {
                 filtrado(filtro);
+                jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
             } else
             {
                 jTblGrillaPalabras.setModel(new ModeloTabla());
                 jTblGrillaPalabras.updateUI();
+                jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
             }
 
         } else
