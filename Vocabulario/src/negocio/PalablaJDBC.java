@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio;
 
 import java.io.IOException;
@@ -15,12 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import negocio.*;
 
-/**
- *
- * @author pablo
- */
 public class PalablaJDBC
 {
 
@@ -35,19 +25,18 @@ public class PalablaJDBC
         try
         {
             String sql = "select id_palabra,  palabra, frecuencia from  Palabra ";
-            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
-            
+            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+
             ResultSet result = statement.executeQuery();
-            
+
             while (result.next())
             {
-                p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1),connection));
+                p = new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1), connection));
                 lista.add(p);
 
             }
             result.close();
             statement.close();
-            
 
         } catch (SQLException ex)
         {
@@ -56,25 +45,26 @@ public class PalablaJDBC
 
         return lista;
     }
+
     public static ArrayList<Palabra> getByFilter(String palabra)
     {
-     
-         Palabra p;
+
+        Palabra p;
         ArrayList<Palabra> lista = new ArrayList<>();
-       
+
         try
         {
 
             Connection connection = abrirConexion();
             String sql = "select id_palabra,  palabra, frecuencia from  Palabra WHERE  palabra like ? ";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, palabra+"%");
+            statement.setString(1, palabra + "%");
 
             ResultSet result = statement.executeQuery();
             while (result.next())
             {
-               
-              p =new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1),connection));
+
+                p = new Palabra(result.getString(2), result.getInt(3), DocumentoJDBC.getDocumentos(result.getInt(1), connection));
                 lista.add(p);
             }
             result.close();
@@ -97,7 +87,7 @@ public class PalablaJDBC
 
         try
         {
-//            Connection connection = abrirConexion();
+
             if (getIdPalabra(p.getPalabra(), connection) == 0)
             {
                 for (String pal : p.getDocumentos())
@@ -112,30 +102,34 @@ public class PalablaJDBC
                     }
                 }
 
-//                Connection connection = abrirConexion();
                 String sql = "INSERT INTO Palabra (palabra, frecuencia )  VALUES(?,?)";
                 PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
                 preparedStmt.setString(1, p.getPalabra());
                 preparedStmt.setInt(2, p.getFrecuencia());
-                preparedStmt.executeUpdate();
-                id = getIdPalabra(p.getPalabra(), connection);
+                int cantidad = preparedStmt.executeUpdate();
+
+                if (cantidad > 0)
+                {
+                    preparedStmt.getGeneratedKeys().next();
+                    id = (int) preparedStmt.getGeneratedKeys().getLong(1);
+                }
+
                 for (Integer integer : idDoc)
                 {
                     PalabraXDocumentoJDBC.Insert(id, integer, connection);
                 }
-//                connection.commit();
+
                 preparedStmt.close();
-//                connection.close();
+
 
             } else
             {
-//                Connection connection = abrirConexion();
+
                 upDate(p, connection);
 
             }
-//            connection.commit();
-//            connection.close();
+
 
         } catch (SQLException ex)
         {
@@ -148,10 +142,8 @@ public class PalablaJDBC
 
     public static void upDate(Palabra p, Connection connection)
     {
-        ArrayList<Integer> idDoc = new ArrayList<>();
         try
         {
-            //Connection connection = abrirConexion();
             String sql = "UPDATE Palabra set frecuencia = ? WHERE palabra = ?";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
 
@@ -160,27 +152,20 @@ public class PalablaJDBC
             preparedStmt.executeUpdate();
             preparedStmt.close();
 
-//            connection.commit();
+
             for (String pal : p.getDocumentos())
             {
                 if (DocumentoJDBC.getIdDocumento(pal, connection) == 0)
                 {
-
                     PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.Insert(pal, connection), connection);
 
-                }
-                else
+                } else if (!PalabraXDocumentoJDBC.existeRelacion(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection))
                 {
-                    
-                    if (!PalabraXDocumentoJDBC.existeRelacion(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection))
-                    {
-                        PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection);                        
-                    }
+                    PalabraXDocumentoJDBC.Insert(PalablaJDBC.getIdPalabra(p.getPalabra(), connection), DocumentoJDBC.getIdDocumento(pal, connection), connection);
                 }
             }
-            
-            
-//            connection.close();
+
+
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,7 +179,7 @@ public class PalablaJDBC
         try
         {
 
-//            Connection connection = abrirConexion();
+
             String sql = "SELECT id_palabra FROM Palabra WHERE palabra = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, palabra);
@@ -207,16 +192,8 @@ public class PalablaJDBC
             }
             result.close();
             statement.close();
-//            connection.close();
 
-        } //        catch (IOException ex)
-        //        {
-        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
-        //        catch (ClassNotFoundException ex)
-        //        {
-        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
+        } 
         catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);

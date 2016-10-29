@@ -315,6 +315,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
     {//GEN-HEADEREND:event_cargarBD
+        
         WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
         worker.execute();
 
@@ -346,12 +347,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     public void filtrado(String filtro)
     {
-//        byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
-//
-//        jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
-//
-//        jTblGrillaPalabras.updateUI();
-        
         byFilterPalabras= new ArrayList<>();
         
         WorkerFiltrado worker= new WorkerFiltrado(jlblGif, jLlbResultado, byFilterPalabras, jLlbCantidad, filtro, jTblGrillaPalabras);
@@ -392,8 +387,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         }
 
-        //jTblGrillaPalabras.updateUI();
-
     }//GEN-LAST:event_jBtnCargarDocumentosActionPerformed
 
     private void jBtnLimpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnLimpiarActionPerformed
@@ -407,8 +400,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void jTflFiltroKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyReleased
     {//GEN-HEADEREND:event_jTflFiltroKeyReleased
-        if (Validaciones.esTexto(evt.getKeyChar()))
-        {
+        
 
             String filtro = jTflFiltro.getText();
             if (filtro.length() > 0)
@@ -422,35 +414,16 @@ public class VocabularioFrame extends javax.swing.JFrame
                 jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
             }
 
-        } else
-        {
-            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
-            evt.consume();
-        }
+        
     }//GEN-LAST:event_jTflFiltroKeyReleased
 
     private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
     {//GEN-HEADEREND:event_jTflFiltroKeyTyped
-       if (Validaciones.esTexto(evt.getKeyChar()))
-        {
-
-            String filtro = jTflFiltro.getText();
-            if (filtro.length() > 0)
-            {
-                filtrado(filtro);
-                jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
-            } else
-            {
-                jTblGrillaPalabras.setModel(new ModeloTabla(voc));
-                jTblGrillaPalabras.updateUI();
-                jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
-            }
-
-        } else
+       if (!Validaciones.esTexto(evt.getKeyChar()))
         {
             JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
             evt.consume();
-        }
+        } 
     }//GEN-LAST:event_jTflFiltroKeyTyped
 
     /**
@@ -518,8 +491,6 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JLabel jlblGif;
     // End of variables declaration//GEN-END:variables
 
-    
-
-    
+  
 
 }

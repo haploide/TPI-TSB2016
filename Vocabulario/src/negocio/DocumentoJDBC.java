@@ -1,50 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package negocio;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author pablo
- */
 public class DocumentoJDBC
 {
 
     public static int Insert(String doc, Connection connection)
     {
         int id = 0;
-
+        
         try
         {
-//            Connection connection = abrirConexion();
             String sql = "INSERT INTO Documento (documento)  VALUES(?)";
-            PreparedStatement preparedStmt = connection.prepareStatement(sql);
+            PreparedStatement preparedStmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStmt.setString(1, doc);
-            preparedStmt.executeUpdate();
+            int cantidad = preparedStmt.executeUpdate();
 
-//            connection.commit();
+            if (cantidad > 0)
+            {
+                preparedStmt.getGeneratedKeys().next();
+                id= (int)preparedStmt.getGeneratedKeys().getLong(1);
+            }
             preparedStmt.close();
-//            connection.close();
 
         } catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        id = getIdDocumento(doc, connection);
+
         return id;
 
     }
@@ -55,7 +46,7 @@ public class DocumentoJDBC
         try
         {
             String sql = "select d.documento from  Documento d join DocumentoXPalabra dp on d.id_documento = dp.id_documento where dp.id_palabra = ? ";
-            PreparedStatement statement = connection.prepareStatement(sql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             statement.setInt(1, idP);
 
             ResultSet result = statement.executeQuery();
@@ -80,7 +71,6 @@ public class DocumentoJDBC
         try
         {
 
-//            Connection connection = abrirConexion();
             String sql = "SELECT id_documento FROM Documento WHERE documento = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, doc);
@@ -93,15 +83,9 @@ public class DocumentoJDBC
             }
             result.close();
             statement.close();
-//            connection.close();
 
-        } //        catch (IOException ex)
-        //        {
-        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        } catch (ClassNotFoundException ex)
-        //        {
-        //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        } 
+
+        } 
         catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,17 +93,6 @@ public class DocumentoJDBC
         return id;
     }
 
-    public DocumentoJDBC()
-    {
-    }
-
-    private static Connection abrirConexion() throws IOException, ClassNotFoundException, SQLException
-    {
-
-        Class.forName("org.sqlite.JDBC");
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:Vocabulario.sqlite");
-        connection.setAutoCommit(false);
-        return connection;
-    }
+      
 
 }

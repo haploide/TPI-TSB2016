@@ -11,10 +11,6 @@ import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import negocio.Vocabulario;
 
-/**
- *
- * @author pablo
- */
 public class WorkerCargar extends SwingWorker<Boolean, Double>
 {
 

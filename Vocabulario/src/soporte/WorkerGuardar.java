@@ -1,4 +1,3 @@
-
 package soporte;
 
 import negocio.Persistencia;
