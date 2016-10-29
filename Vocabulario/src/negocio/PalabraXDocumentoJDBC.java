@@ -13,10 +13,8 @@ public class PalabraXDocumentoJDBC
 {
     public static void Insert(int p, int d, Connection connection )
     {
-
         try
         {
-           
             String sql = "INSERT INTO documentoXpalabra (id_documento, id_palabra) VALUES(?,?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
            
@@ -26,22 +24,16 @@ public class PalabraXDocumentoJDBC
 
             preparedStmt.close();
 
-
         } catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalabraXDocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-
     }
     public static boolean existeRelacion(int p, int d, Connection connection)
     {
-       
          try
         {
-
-
-            String sql = "SELECT * FROM documentoXpalabra WHERE id_palabra = ? and id_documento = ?";
+            String sql = "SELECT id_palabra, id_documento FROM documentoXpalabra WHERE id_palabra = ? and id_documento = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, p);
             statement.setInt(2, d);
@@ -50,19 +42,15 @@ public class PalabraXDocumentoJDBC
             while (result.next())
             {
                 return true;
-
             }
             result.close();
             statement.close();
-
-
         } 
         catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalabraXDocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-        
     }
     
 }

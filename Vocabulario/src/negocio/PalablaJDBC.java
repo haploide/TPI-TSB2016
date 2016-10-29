@@ -40,7 +40,7 @@ public class PalablaJDBC
 
         } catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalablaJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return lista;
@@ -73,7 +73,7 @@ public class PalablaJDBC
 
         } catch (IOException | ClassNotFoundException | SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalablaJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return lista;
@@ -133,7 +133,7 @@ public class PalablaJDBC
 
         } catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalablaJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return id;
@@ -168,7 +168,7 @@ public class PalablaJDBC
 
         } catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalablaJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -178,8 +178,6 @@ public class PalablaJDBC
         int id = 0;
         try
         {
-
-
             String sql = "SELECT id_palabra FROM Palabra WHERE palabra = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, palabra);
@@ -196,7 +194,7 @@ public class PalablaJDBC
         } 
         catch (SQLException ex)
         {
-            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PalablaJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
     }
