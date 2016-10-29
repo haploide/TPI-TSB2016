@@ -46,7 +46,7 @@ public class DocumentoJDBC
         try
         {
             String sql = "select d.documento from  Documento d join DocumentoXPalabra dp on d.id_documento = dp.id_documento where dp.id_palabra = ? ";
-            PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, idP);
 
             ResultSet result = statement.executeQuery();

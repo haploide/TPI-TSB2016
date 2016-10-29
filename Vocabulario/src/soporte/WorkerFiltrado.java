@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import negocio.Palabra;
 
-public class WorkerFiltrado extends SwingWorker<ArrayList<Palabra>, Void>
+public class WorkerFiltrado extends SwingWorker<Boolean, Void>
 {
 
     private final JLabel jlblGif;
@@ -33,13 +33,13 @@ public class WorkerFiltrado extends SwingWorker<ArrayList<Palabra>, Void>
     
 
     @Override
-    protected ArrayList<Palabra> doInBackground() throws Exception
+    protected Boolean doInBackground() throws Exception
     {
         jlblResultado.setText("Filtrando...");
         jlblGif.setVisible(true);
         byFilterPalabras= Persistencia.getByFilterPalabras(filtro);
               
-        return byFilterPalabras;
+        return true;
 
     }
 

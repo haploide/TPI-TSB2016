@@ -322,12 +322,6 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     }//GEN-LAST:event_cargarBD
 
-    private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
-    {//GEN-HEADEREND:event_filtrado
-
-
-    }//GEN-LAST:event_filtrado
-
     private void jBtnFiltrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnFiltrarActionPerformed
     {//GEN-HEADEREND:event_jBtnFiltrarActionPerformed
         String filtro = jTflFiltro.getText();
@@ -425,6 +419,11 @@ public class VocabularioFrame extends javax.swing.JFrame
             evt.consume();
         } 
     }//GEN-LAST:event_jTflFiltroKeyTyped
+
+    private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
+    {//GEN-HEADEREND:event_filtrado
+
+    }//GEN-LAST:event_filtrado
 
     /**
      * @param args the command line arguments
