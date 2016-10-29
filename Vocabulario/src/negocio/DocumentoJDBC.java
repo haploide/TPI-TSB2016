@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package soporte;
+package negocio;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,28 +11,31 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import negocio.Palabra;
 
 /**
  *
  * @author pablo
  */
-public class PalabraXDocumentoJDBC
+public class DocumentoJDBC
 {
-    public static void Insert(int p, int d, Connection connection )
+
+    public static int Insert(String doc, Connection connection)
     {
+        int id = 0;
 
         try
         {
-           // Connection connection = abrirConexion();
-            String sql = "INSERT INTO documentoXpalabra (id_documento, id_palabra) VALUES(?,?)";
+//            Connection connection = abrirConexion();
+            String sql = "INSERT INTO Documento (documento)  VALUES(?)";
             PreparedStatement preparedStmt = connection.prepareStatement(sql);
-           
-            preparedStmt.setInt(1, d);
-            preparedStmt.setInt(2, p);
+
+            preparedStmt.setString(1, doc);
             preparedStmt.executeUpdate();
+
 //            connection.commit();
             preparedStmt.close();
 //            connection.close();
@@ -41,25 +44,51 @@ public class PalabraXDocumentoJDBC
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        id = getIdDocumento(doc, connection);
+        return id;
 
     }
-    public static boolean existeRelacion(int p, int d, Connection connection)
-    {
-       
-         try
-        {
 
-//            Connection connection = abrirConexion();
-            String sql = "SELECT * FROM documentoXpalabra WHERE id_palabra = ? and id_documento = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, p);
-            statement.setInt(2, d);
+    public static LinkedList<String> getDocumentos(int idP, Connection connection)
+    {
+        LinkedList<String> d = new LinkedList<>();
+        try
+        {
+            String sql = "select d.documento from  Documento d join DocumentoXPalabra dp on d.id_documento = dp.id_documento where dp.id_palabra = ? ";
+            PreparedStatement statement = connection.prepareStatement(sql,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+            statement.setInt(1, idP);
 
             ResultSet result = statement.executeQuery();
             while (result.next())
             {
-                return true;
+                d.add(result.getString(1));
+            }
+            result.close();
+            statement.close();
+
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return d;
+
+    }
+
+    public static int getIdDocumento(String doc, Connection connection)
+    {
+        int id = 0;
+        try
+        {
+
+//            Connection connection = abrirConexion();
+            String sql = "SELECT id_documento FROM Documento WHERE documento = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, doc);
+
+            ResultSet result = statement.executeQuery();
+            while (result.next())
+            {
+                id = result.getInt(1);
 
             }
             result.close();
@@ -69,18 +98,21 @@ public class PalabraXDocumentoJDBC
         } //        catch (IOException ex)
         //        {
         //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
-        //        catch (ClassNotFoundException ex)
+        //        } catch (ClassNotFoundException ex)
         //        {
         //            Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
+        //        } 
         catch (SQLException ex)
         {
             Logger.getLogger(DocumentoJDBC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
-        
+        return id;
     }
+
+    public DocumentoJDBC()
+    {
+    }
+
     private static Connection abrirConexion() throws IOException, ClassNotFoundException, SQLException
     {
 
@@ -89,4 +121,5 @@ public class PalabraXDocumentoJDBC
         connection.setAutoCommit(false);
         return connection;
     }
+
 }

@@ -1,6 +1,7 @@
 package soporte;
 
 
+import negocio.Persistencia;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -48,6 +49,8 @@ public class WorkerFiltrado extends SwingWorker<ArrayList<Palabra>, Void>
         jlblGif.setVisible(false);
         jlblResultado.setText("Filtrado Finalizado!");
         jLlbCantidad.setText("Cantidad de Elementos Filtrados: " + byFilterPalabras.size());
+        jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
+
         jTblGrillaPalabras.updateUI();
         
         

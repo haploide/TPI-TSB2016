@@ -1,4 +1,4 @@
-package soporte;
+package negocio;
 
 import java.io.IOException;
 import java.sql.Connection;

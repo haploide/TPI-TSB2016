@@ -12,12 +12,12 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.AbstractTableModel;
 import negocio.Palabra;
 import negocio.Vocabulario;
-import soporte.Persistencia;
+import soporte.ModeloTabla;
 import soporte.Validaciones;
 import soporte.WorkerCargar;
+import soporte.WorkerFiltrado;
 import soporte.WorkerGuardar;
 import soporte.WorkerHashing;
 
@@ -99,7 +99,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
         jPnlPalabras.setBorder(javax.swing.BorderFactory.createTitledBorder("Palabras"));
 
-        jTblGrillaPalabras.setModel(new ModeloTabla()
+        jTblGrillaPalabras.setModel(new ModeloTabla(voc)
         );
         jScllPalabras.setViewportView(jTblGrillaPalabras);
 
@@ -136,6 +136,10 @@ public class VocabularioFrame extends javax.swing.JFrame
             public void keyReleased(java.awt.event.KeyEvent evt)
             {
                 jTflFiltroKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt)
+            {
+                jTflFiltroKeyTyped(evt);
             }
         });
 
@@ -342,11 +346,16 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     public void filtrado(String filtro)
     {
-        byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
-
-        jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
-
-        jTblGrillaPalabras.updateUI();
+//        byFilterPalabras = Persistencia.getByFilterPalabras(filtro);
+//
+//        jTblGrillaPalabras.setModel(new ModeloFiltrado(byFilterPalabras));
+//
+//        jTblGrillaPalabras.updateUI();
+        
+        byFilterPalabras= new ArrayList<>();
+        
+        WorkerFiltrado worker= new WorkerFiltrado(jlblGif, jLlbResultado, byFilterPalabras, jLlbCantidad, filtro, jTblGrillaPalabras);
+        worker.execute();
     }
 
     private void jBtnCargarDocumentosActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnCargarDocumentosActionPerformed
@@ -373,7 +382,7 @@ public class VocabularioFrame extends javax.swing.JFrame
 
                 jBtnGuardar.setEnabled(true);
 
-                jTblGrillaPalabras.setModel(new ModeloTabla());
+                jTblGrillaPalabras.setModel(new ModeloTabla(voc));
 
                 break;
 
@@ -390,7 +399,8 @@ public class VocabularioFrame extends javax.swing.JFrame
     private void jBtnLimpiarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnLimpiarActionPerformed
     {//GEN-HEADEREND:event_jBtnLimpiarActionPerformed
         jTflFiltro.setText("");
-        jTblGrillaPalabras.setModel(new ModeloTabla());
+        jTblGrillaPalabras.setModel(new ModeloTabla(voc));
+        jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
         jTblGrillaPalabras.updateUI();
 
     }//GEN-LAST:event_jBtnLimpiarActionPerformed
@@ -407,7 +417,7 @@ public class VocabularioFrame extends javax.swing.JFrame
                 jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
             } else
             {
-                jTblGrillaPalabras.setModel(new ModeloTabla());
+                jTblGrillaPalabras.setModel(new ModeloTabla(voc));
                 jTblGrillaPalabras.updateUI();
                 jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
             }
@@ -418,6 +428,30 @@ public class VocabularioFrame extends javax.swing.JFrame
             evt.consume();
         }
     }//GEN-LAST:event_jTflFiltroKeyReleased
+
+    private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
+    {//GEN-HEADEREND:event_jTflFiltroKeyTyped
+       if (Validaciones.esTexto(evt.getKeyChar()))
+        {
+
+            String filtro = jTflFiltro.getText();
+            if (filtro.length() > 0)
+            {
+                filtrado(filtro);
+                jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
+            } else
+            {
+                jTblGrillaPalabras.setModel(new ModeloTabla(voc));
+                jTblGrillaPalabras.updateUI();
+                jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
+            }
+
+        } else
+        {
+            JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTflFiltroKeyTyped
 
     /**
      * @param args the command line arguments
@@ -484,121 +518,8 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JLabel jlblGif;
     // End of variables declaration//GEN-END:variables
 
-    class ModeloTabla extends AbstractTableModel
-    {
+    
 
-        @Override
-        public int getRowCount()
-        {
-            return voc.getSizeHash();
-
-        }
-
-        @Override
-        public int getColumnCount()
-        {
-            return 3;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex)
-        {
-            Palabra tabla[] = voc.getTabla();
-
-            if (tabla[rowIndex] != null)
-            {
-                switch (columnIndex)
-                {
-                    case 0:
-
-                        return tabla[rowIndex].getPalabra();
-
-                    case 1:
-
-                        return tabla[rowIndex].getFrecuencia();
-
-                    case 2:
-
-                        return tabla[rowIndex].getDocumentos().toString();
-
-                }
-            }
-
-            return "-------";
-
-        }
-
-        @Override
-        public String getColumnName(int column)
-        {
-            String nombres[] =
-            {
-                "Palabra", "Frecuencia", "Documentos"
-            };
-
-            return nombres[column];
-        }
-
-    }
-
-    class ModeloFiltrado extends AbstractTableModel
-    {
-
-        ArrayList<Palabra> filtrado;
-
-        public ModeloFiltrado(ArrayList<Palabra> filtrado)
-        {
-            this.filtrado = filtrado;
-        }
-
-        @Override
-        public int getRowCount()
-        {
-            return filtrado.size();
-        }
-
-        @Override
-        public int getColumnCount()
-        {
-            return 3;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex)
-        {
-            if (filtrado.get(rowIndex) != null)
-            {
-                switch (columnIndex)
-                {
-                    case 0:
-
-                        return filtrado.get(rowIndex).getPalabra();
-
-                    case 1:
-
-                        return filtrado.get(rowIndex).getFrecuencia();
-
-                    case 2:
-
-                        return filtrado.get(rowIndex).getDocumentos().toString();
-
-                }
-            }
-
-            return "-------";
-        }
-
-        @Override
-        public String getColumnName(int column)
-        {
-            String nombres[] =
-            {
-                "Palabra", "Frecuencia", "Documentos"
-            };
-
-            return nombres[column];
-        }
-
-    }
+    
 
 }
