@@ -27,12 +27,14 @@ public class VocabularioFrame extends javax.swing.JFrame
     private Vocabulario voc;
     private LinkedList<File> colaTareas;
     private ArrayList<Palabra> byFilterPalabras;
+    private boolean cargoYNoGuardo;
 
     /**
      * Creates new form Vocabulario
      */
     public VocabularioFrame()
     {
+        this.cargoYNoGuardo = false;
         voc = new Vocabulario();
         colaTareas = new LinkedList<>();
         initComponents();
@@ -288,7 +290,7 @@ public class VocabularioFrame extends javax.swing.JFrame
     private void jBtnGuardarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jBtnGuardarActionPerformed
     {//GEN-HEADEREND:event_jBtnGuardarActionPerformed
 
-        int result = JOptionPane.showConfirmDialog(this, "Esta por guardar el vocabulario\n¿Está seguro de continuar?", "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(this, "Esta por guardar el vocabulario\n¿Está seguro de continuar?", "Atención", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (result == JOptionPane.YES_OPTION)
         {
@@ -309,15 +311,18 @@ public class VocabularioFrame extends javax.swing.JFrame
             }
 
         }
+        cargoYNoGuardo = false;
 
 
     }//GEN-LAST:event_jBtnGuardarActionPerformed
 
     private void cargarBD(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cargarBD
     {//GEN-HEADEREND:event_cargarBD
-        
+
         WorkerCargar worker = new WorkerCargar(jlblGif, jLlbResultado, voc, jLlbCantidad, jTblGrillaPalabras);
         worker.execute();
+
+        cargoYNoGuardo = false;
 
 
     }//GEN-LAST:event_cargarBD
@@ -341,9 +346,9 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     public void filtrado(String filtro)
     {
-        byFilterPalabras= new ArrayList<>();
-        
-        WorkerFiltrado worker= new WorkerFiltrado(jlblGif, jLlbResultado, byFilterPalabras, jLlbCantidad, filtro, jTblGrillaPalabras);
+        byFilterPalabras = new ArrayList<>();
+
+        WorkerFiltrado worker = new WorkerFiltrado(jlblGif, jLlbResultado, byFilterPalabras, jLlbCantidad, filtro, jTblGrillaPalabras);
         worker.execute();
     }
 
@@ -380,6 +385,7 @@ public class VocabularioFrame extends javax.swing.JFrame
                 break;
 
         }
+        cargoYNoGuardo = true;
 
     }//GEN-LAST:event_jBtnCargarDocumentosActionPerformed
 
@@ -394,30 +400,34 @@ public class VocabularioFrame extends javax.swing.JFrame
 
     private void jTflFiltroKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyReleased
     {//GEN-HEADEREND:event_jTflFiltroKeyReleased
-        
+        if (cargoYNoGuardo&&jTflFiltro.getText().length()>0)
+        {
+            JOptionPane.showMessageDialog(this, "Los Documentos sin guardar no se incluirán en el filtrado", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            
+        }
 
-            String filtro = jTflFiltro.getText();
-            if (filtro.length() > 0)
-            {
-                filtrado(filtro);
-                jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
-            } else
-            {
-                jTblGrillaPalabras.setModel(new ModeloTabla(voc));
-                jTblGrillaPalabras.updateUI();
-                jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
-            }
+        String filtro = jTflFiltro.getText();
+        if (filtro.length() > 0)
+        {
+            filtrado(filtro);
+            jLlbCantidad.setText("Cantidad de Elementos: " + byFilterPalabras.size());
+        } else
+        {
+            jTblGrillaPalabras.setModel(new ModeloTabla(voc));
+            jTblGrillaPalabras.updateUI();
+            jLlbCantidad.setText("Cantidad de Elementos: " + voc.getSizeHash());
+        }
 
-        
+
     }//GEN-LAST:event_jTflFiltroKeyReleased
 
     private void jTflFiltroKeyTyped(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jTflFiltroKeyTyped
     {//GEN-HEADEREND:event_jTflFiltroKeyTyped
-       if (!Validaciones.esTexto(evt.getKeyChar()))
+        if (!Validaciones.esTexto(evt.getKeyChar()))
         {
             JOptionPane.showMessageDialog(this, "Ingrese solo Letras", "Error", JOptionPane.OK_OPTION, null);
             evt.consume();
-        } 
+        }
     }//GEN-LAST:event_jTflFiltroKeyTyped
 
     private void filtrado(java.awt.event.KeyEvent evt)//GEN-FIRST:event_filtrado
@@ -489,7 +499,5 @@ public class VocabularioFrame extends javax.swing.JFrame
     private javax.swing.JTextField jTflFiltro;
     private javax.swing.JLabel jlblGif;
     // End of variables declaration//GEN-END:variables
-
-  
 
 }
